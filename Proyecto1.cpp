@@ -49,6 +49,13 @@ struct Albumes {
     Albumes * sig;
 
     Canciones * cancion;
+Albumes(int id, string titulo, int anno) {
+        ID = id;
+        Titulo = titulo;
+        Anno = anno;
+        N_canciones = 0;
+        sig = nullptr;
+        cancion = nullptr;
 
 }*primeroAlb;
 
