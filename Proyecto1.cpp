@@ -49,6 +49,7 @@ struct Albumes {
     Albumes * sig;
 
     Canciones * cancion;
+
     Albumes(int id, string titulo, int anno) {
         ID = id;
         Titulo = titulo;
@@ -57,6 +58,7 @@ struct Albumes {
         sig = nullptr;
         cancion = nullptr;
     }
+
 }*primeroAlb;
 
 
@@ -76,6 +78,7 @@ struct Generos_Musicales {
         Descripcion = descripcion;
 
         sig = nullptr;
+        cancion = nullptr;
     }
 
 }*primeroG;
@@ -157,3 +160,6 @@ void insertarGeneroMusical (int id, string nombre, string descripcion){
 //Funciones de Sellos Discograficos
 
 
+int main (){
+    return 0;
+}
