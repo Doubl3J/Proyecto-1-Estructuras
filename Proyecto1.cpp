@@ -21,19 +21,7 @@ struct Canciones {
     }
 
 }*primeroC;
-
-//Lista simple Ins al final
-struct Albumes {
-    int ID;
-    string Titulo;
-    int Anno;
-    int N_canciones;
-
-    Albumes * sig;
-
-    Canciones * cancion;
-
-}*primeroAlb;
+//intento de commit
 
 //Lista doble ordenada alfabeticamente
 struct Artistas {
@@ -51,6 +39,18 @@ struct Artistas {
 
 }*primeroArt;
 
+//Lista simple Ins al final
+struct Albumes {
+    int ID;
+    string Titulo;
+    int Anno;
+    int N_canciones;
+
+    Albumes * sig;
+
+    Canciones * cancion;
+
+}*primeroAlb;
 
 
 //Lista circular Ins al final
@@ -93,9 +93,21 @@ struct Sellos_Discograficos {
 
 }*primeroSD;
 
-
 void insertarCancion(int id,string t,int d,int id_al,int id_ar){
     Canciones * nc = new Canciones (id,t,d,id_al,id_ar);
     nc -> sig = primeroC;
     primeroC = nc;
+}
+void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracion, int id_album, int id_artista) {
+    Canciones* nueva = new Canciones(id, titulo, duracion, id_album, id_artista);
+    
+    if (!cabeza) {
+        cabeza = nueva;
+    } else {
+        Canciones* actual = cabeza;
+        while (actual->sig) {
+            actual = actual->sig;
+        }
+        actual->sig = nueva;
+    }
 }
