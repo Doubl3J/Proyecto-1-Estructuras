@@ -93,11 +93,12 @@ struct Sellos_Discograficos {
 
 }*primeroSD;
 
-void insertarCancion(int id,string t,int d,int id_al,int id_ar){
-    Canciones * nc = new Canciones (id,t,d,id_al,id_ar);
+void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artista){
+    Canciones * nc = new Canciones (id, titulo, duracion, id_album, id_artista);
     nc -> sig = primeroC;
     primeroC = nc;
 }
+
 void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracion, int id_album, int id_artista) {
     Canciones* nueva = new Canciones(id, titulo, duracion, id_album, id_artista);
     
