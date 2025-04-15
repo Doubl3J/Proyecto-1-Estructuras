@@ -164,8 +164,12 @@ void insertarGeneroMusical (int id, string nombre, string descripcion){
     }
 }
 
-//Funciones de Playlists
-
+//Funciones de Playlists 
+void insertarPlaylist(int id, string nombre, string creador,string fecha){
+    Playlist * np = new Playlist(id,nombre,creador,fecha);
+    np -> sig = primeroP;
+    primeroP = np;
+}
 //Funciones de Sellos Discograficos
 void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de_fundacion) {
     Sellos_Discograficos* NSD = new Sellos_Discograficos(id, nombre, pais, anno_de_fundacion);
@@ -182,4 +186,6 @@ void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de
         primeroSD->ant = NSD;
     }
 }
-
+int main (){
+    return 0;
+}
