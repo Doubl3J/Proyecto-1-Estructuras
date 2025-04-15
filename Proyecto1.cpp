@@ -50,13 +50,12 @@ struct Albumes {
 
     Canciones * cancion;
     Albumes(int id, string titulo, int anno) {
-            ID = id;
-            Titulo = titulo;
-            Anno = anno;
-            N_canciones = 0;
-            sig = nullptr;
-            cancion = nullptr;
-    }
+        ID = id;
+        Titulo = titulo;
+        Anno = anno;
+        N_canciones = 0;
+        sig = nullptr;
+        cancion = nullptr;
 
 }*primeroAlb;
 
@@ -121,7 +120,7 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 void insertaralbum(Albumes*& cabeza, int id, string titulo, int anno) {
     Albumes* nueva = new Albumes(id, titulo, anno);
 
-    if (!cabeza) {
+    if (cabeza==nullptr) {
         cabeza = nueva;
     } else {
         Albumes* actual = cabeza;
