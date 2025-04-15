@@ -110,13 +110,13 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 
 
 //Funciones de Album
-void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracion, int id_album, int id_artista) {
-    Canciones* nueva = new Canciones(id, titulo, duracion, id_album, id_artista);
-    
+void insertaralbum(Albumes*& cabeza, int id, string titulo, int anno) {
+    Albumes* nueva = new Albumes(id, titulo, anno);
+
     if (!cabeza) {
         cabeza = nueva;
     } else {
-        Canciones* actual = cabeza;
+        Albumes* actual = cabeza;
         while (actual->sig) {
             actual = actual->sig;
         }
