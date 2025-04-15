@@ -41,7 +41,7 @@ struct Generos_Musicales {
 
     Generos_Musicales * sig;
     Generos_Musicales * ant;
-    
+
 }*primeroG;
 
 struct Playlist {
@@ -52,7 +52,7 @@ struct Playlist {
 
     Playlist * sig;
 
-}*primeroPlay;
+}*primeroP;
 
 
 
@@ -61,4 +61,8 @@ struct Sellos_Discograficos {
     string Nombre;
     string Pais;
     int Anno_fundacion;
-};
+
+    Sellos_Discograficos * sig;
+    Sellos_Discograficos * ant;
+
+}*primeroSD;
