@@ -24,3 +24,11 @@ struct Albumes {
     int N_canciones;
 };
 
+struct Playlist {
+    int ID;
+    string nombre;
+    string creador;
+    string fecha;
+};
+
+struct Generos_Musicales
