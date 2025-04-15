@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+//Lista simple Ins al inicio
 struct Canciones {
     int ID;
     string Titulo;
@@ -12,6 +13,7 @@ struct Canciones {
 
 }*primeroC;
 
+//Lista doble ordenada alfabeticamente
 struct Artistas {
     int ID;
     string Nombre_Artistico;
@@ -24,6 +26,7 @@ struct Artistas {
 
 }*primeroArt;
 
+//Lista simple Ins al final
 struct Albumes {
     int ID;
     string Titulo;
@@ -34,6 +37,7 @@ struct Albumes {
 
 }*primeroAlb;
 
+//Lista circular Ins al final
 struct Generos_Musicales {
     int ID;
     string Nombre;
@@ -44,6 +48,7 @@ struct Generos_Musicales {
 
 }*primeroG;
 
+//Lista simple Ins al inicio
 struct Playlist {
     int ID;
     string Nombre;
@@ -55,7 +60,7 @@ struct Playlist {
 }*primeroP;
 
 
-
+//Lista doble y circular ins al final
 struct Sellos_Discograficos {
     int ID;
     string Nombre;
