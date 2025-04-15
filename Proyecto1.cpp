@@ -124,6 +124,9 @@ void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracio
     }
 }
 
+//Funciones de Artistas
+
+
 //Funciones de Genero Musical
 void insertarGeneroMusical (int id, string nombre, string descripcion){
     Generos_Musicales * ng = new Generos_Musicales(id,nombre,descripcion);
@@ -141,3 +144,9 @@ void insertarGeneroMusical (int id, string nombre, string descripcion){
         temp -> sig = ng;
     }
 }
+
+//Funciones de Playlists
+
+//Funciones de Sellos Discograficos
+
+
