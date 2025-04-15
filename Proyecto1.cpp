@@ -58,7 +58,21 @@ struct Artistas {
     Artistas * ant;
 
     Albumes * album;
-    Canciones * cancion;
+    Canciones * canciones;
+
+    Artistas(int id,string nombre_artistico, string nombre_real, string pais, string sello_discografico){
+        ID = id;
+        Nombre_Artistico = nombre_artistico;
+        Nombre_Real = nombre_real;
+        Pais = pais;
+        Sello_Discografico = sello_discografico;
+
+        sig = nullptr;
+        ant = nullptr;
+
+        album = nullptr;
+        canciones = nullptr;
+    }
 
 }*primeroArt;
 
@@ -148,7 +162,9 @@ void insertarAlbum(Albumes*& cabeza, int id, string titulo, int anno) {
 }
 
 //Funciones de Artistas
-
+void insertarArtistas (int id, string nombre_artistico, string nombre_real, string pais, string sello_discografico){
+    
+}
 
 //Funciones de Genero Musical
 void insertarGeneroMusical (int id, string nombre, string descripcion){
