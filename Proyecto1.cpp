@@ -56,7 +56,7 @@ struct Albumes {
         N_canciones = 0;
         sig = nullptr;
         cancion = nullptr;
-
+    }
 }*primeroAlb;
 
 
