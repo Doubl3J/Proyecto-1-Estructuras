@@ -96,7 +96,6 @@ struct Sellos_Discograficos {
 
 void insertarCancion(int id,string t,int d,int id_al,int id_ar){
     Canciones * nc = new Canciones (id,t,d,id_al,id_ar);
-
     nc -> sig = primeroC;
     primeroC = nc;
 }
