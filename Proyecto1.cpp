@@ -31,4 +31,15 @@ struct Playlist {
     string fecha;
 };
 
-struct Generos_Musicales
+struct Generos_Musicales {
+    int ID;
+    string nombre;
+    string descripcion;
+};
+
+struct Sellos_Discograficos {
+    int ID;
+    string nombre;
+    string pais;
+    int anno_fundacion;
+};
