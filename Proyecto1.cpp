@@ -120,7 +120,7 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 void insertaralbum(Albumes*& cabeza, int id, string titulo, int anno) {
     Albumes* nueva = new Albumes(id, titulo, anno);
 
-    if (!cabeza) {
+    if (cabeza==nullptr) {
         cabeza = nueva;
     } else {
         Albumes* actual = cabeza;
