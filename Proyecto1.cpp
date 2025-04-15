@@ -3,8 +3,8 @@ using namespace std;
 
 struct Canciones {
     int ID;
-    string titulo;
-    int duracion;
+    string Titulo;
+    int Duracion;
     int ID_Album;
     int ID_Artista;
 };
@@ -19,27 +19,27 @@ struct Artistas {
 
 struct Albumes {
     int ID;
-    string titulo;
-    int anno;
+    string Titulo;
+    int Anno;
     int N_canciones;
 };
 
 struct Playlist {
     int ID;
-    string nombre;
-    string creador;
-    string fecha;
+    string Nombre;
+    string Creador;
+    string Fecha;
 };
 
 struct Generos_Musicales {
     int ID;
-    string nombre;
-    string descripcion;
+    string Nombre;
+    string Descripcion;
 };
 
 struct Sellos_Discograficos {
     int ID;
-    string nombre;
-    string pais;
-    int anno_fundacion;
+    string Nombre;
+    string Pais;
+    int Anno_fundacion;
 };
