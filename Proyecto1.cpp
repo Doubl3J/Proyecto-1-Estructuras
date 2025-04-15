@@ -17,11 +17,11 @@ struct Canciones {
         Duracion = d;
         ID_Album = id_al;
         ID_Artista = id_ar;
+
         sig = nullptr;
     }
 
 }*primeroC;
-//intento de commit
 
 //Lista doble ordenada alfabeticamente
 struct Artistas {
@@ -63,6 +63,14 @@ struct Generos_Musicales {
 
     Canciones * cancion;
 
+    Generos_Musicales(int id, string nombre, string descripcion){
+        ID = id;
+        Nombre = nombre;
+        Descripcion = descripcion;
+
+        sig = nullptr;
+    }
+
 }*primeroG;
 
 //Lista simple Ins al inicio
@@ -93,12 +101,15 @@ struct Sellos_Discograficos {
 
 }*primeroSD;
 
+//Funciones de Cancion
 void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artista){
     Canciones * nc = new Canciones (id, titulo, duracion, id_album, id_artista);
     nc -> sig = primeroC;
     primeroC = nc;
 }
 
+
+//Funciones de Album
 void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracion, int id_album, int id_artista) {
     Canciones* nueva = new Canciones(id, titulo, duracion, id_album, id_artista);
     
@@ -110,5 +121,23 @@ void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracio
             actual = actual->sig;
         }
         actual->sig = nueva;
+    }
+}
+
+//Funciones de Genero Musical
+void insertarGeneroMusical (int id, string nombre, string descripcion){
+    Generos_Musicales * ng = new Generos_Musicales(id,nombre,descripcion);
+
+    if (primeroG == nullptr){
+        primeroG = ng;
+        ng -> sig = ng;
+    }
+    else{
+        ng -> sig = primeroG;
+        Generos_Musicales * temp = primeroG;
+        while (temp -> sig != primeroG){
+            temp = temp -> sig;
+        }
+        temp -> sig = ng;
     }
 }
