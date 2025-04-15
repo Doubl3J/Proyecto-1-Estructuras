@@ -99,16 +99,3 @@ void insertarCancion(int id,string t,int d,int id_al,int id_ar){
     nc -> sig = primeroC;
     primeroC = nc;
 }
-void insertarcancionalbum(Canciones*& cabeza, int id, string titulo, int duracion, int id_album, int id_artista) {
-    Canciones* nueva = new Canciones(id, titulo, duracion, id_album, id_artista);
-    
-    if (!cabeza) {
-        cabeza = nueva;
-    } else {
-        Canciones* actual = cabeza;
-        while (actual->sig) {
-            actual = actual->sig;
-        }
-        actual->sig = nueva;
-    }
-}
