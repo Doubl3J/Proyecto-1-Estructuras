@@ -24,6 +24,9 @@ struct Artistas {
     Artistas * sig;
     Artistas * ant;
 
+    Albumes * album;
+    Canciones * cancion;
+
 }*primeroArt;
 
 //Lista simple Ins al final
@@ -35,6 +38,8 @@ struct Albumes {
 
     Albumes * sig;
 
+    Canciones * cancion;
+
 }*primeroAlb;
 
 //Lista circular Ins al final
@@ -44,6 +49,8 @@ struct Generos_Musicales {
     string Descripcion;
 
     Generos_Musicales * sig;
+
+    Canciones * cancion;
 
 }*primeroG;
 
@@ -55,6 +62,8 @@ struct Playlist {
     string Fecha;
 
     Playlist * sig;
+
+    Canciones * cancion;
 
 }*primeroP;
 
@@ -68,5 +77,7 @@ struct Sellos_Discograficos {
 
     Sellos_Discograficos * sig;
     Sellos_Discograficos * ant;
+
+    Artistas * artist;
 
 }*primeroSD;
