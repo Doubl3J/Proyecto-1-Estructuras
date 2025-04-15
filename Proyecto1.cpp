@@ -44,7 +44,6 @@ struct Generos_Musicales {
     string Descripcion;
 
     Generos_Musicales * sig;
-    Generos_Musicales * ant;
 
 }*primeroG;
 
