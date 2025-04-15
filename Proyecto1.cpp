@@ -23,21 +23,6 @@ struct Canciones {
 
 }*primeroC;
 
-//Lista doble ordenada alfabeticamente
-struct Artistas {
-    int ID;
-    string Nombre_Artistico;
-    string Nombre_Real;
-    string Pais;
-    string Sello_Discografico;
-
-    Artistas * sig;
-    Artistas * ant;
-
-    Albumes * album;
-    Canciones * cancion;
-
-}*primeroArt;
 
 //Lista simple Ins al final
 struct Albumes {
@@ -58,6 +43,24 @@ struct Albumes {
         cancion = nullptr;
     }
 }*primeroAlb;
+
+//Lista doble ordenada alfabeticamente
+struct Artistas {
+    int ID;
+    string Nombre_Artistico;
+    string Nombre_Real;
+    string Pais;
+    string Sello_Discografico;
+
+    Artistas * sig;
+    Artistas * ant;
+
+    Albumes * album;
+    Canciones * cancion;
+
+}*primeroArt;
+
+
 
 
 //Lista circular Ins al final
@@ -101,12 +104,21 @@ struct Sellos_Discograficos {
     string Pais;
     int Anno_fundacion;
 
-    Sellos_Discograficos * sig;
-    Sellos_Discograficos * ant;
+    Sellos_Discograficos* sig;
+    Sellos_Discograficos* ant;
 
-    Artistas * artist;
+    Artistas* artist;
 
-}*primeroSD;
+    Sellos_Discograficos(int _ID, string _Nombre, string _Pais, int _Anno_fundacion) {
+        ID = _ID;
+        Nombre = _Nombre;
+        Pais = _Pais;
+        Anno_fundacion = _Anno_fundacion;
+        sig = ant = nullptr;
+        artist = nullptr;
+    }
+} *primeroSD = nullptr;
+
 
 //Funciones de Cancion
 void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artista){
@@ -117,13 +129,13 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 
 
 //Funciones de Album
-void insertaralbum(Albumes*& cabeza, int id, string titulo, int anno) {
+void insertaralbum(int id, string titulo, int anno) {
     Albumes* nueva = new Albumes(id, titulo, anno);
 
-    if (cabeza==nullptr) {
-        cabeza = nueva;
+    if (primeroAlb==nullptr) {
+        primeroAlb = nueva;
     } else {
-        Albumes* actual = cabeza;
+        Albumes* actual = primeroAlb;
         while (actual->sig) {
             actual = actual->sig;
         }
@@ -155,5 +167,19 @@ void insertarGeneroMusical (int id, string nombre, string descripcion){
 //Funciones de Playlists
 
 //Funciones de Sellos Discograficos
+void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de_fundacion) {
+    Sellos_Discograficos* NSD = new Sellos_Discograficos(id, nombre, pais, anno_de_fundacion);
 
+    if (primeroSD == nullptr) {
+        primeroSD = NSD;
+        primeroSD->sig = primeroSD;
+        primeroSD->ant = primeroSD;
+    } else {
+        Sellos_Discograficos* ultimo = primeroSD->ant;
+        ultimo->sig = NSD;
+        NSD->ant = ultimo;
+        NSD->sig = primeroSD;
+        primeroSD->ant = NSD;
+    }
+}
 
