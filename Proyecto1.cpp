@@ -39,6 +39,7 @@ struct Albumes {
         Titulo = titulo;
         Anno = anno;
         N_canciones = 0;
+
         sig = nullptr;
         cancion = nullptr;
     }
@@ -96,6 +97,16 @@ struct Playlist {
 
     Canciones * cancion;
 
+    Playlist(int id, string nombre, string creador,string fecha){
+        ID = id;
+        Nombre = nombre;
+        Creador = creador;
+        Fecha = fecha;
+
+        sig = nullptr;
+        cancion = nullptr;
+    }
+
 }*primeroP;
 
 
@@ -122,7 +133,7 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 
 
 //Funciones de Album
-void insertaralbum(Albumes*& cabeza, int id, string titulo, int anno) {
+void insertarAlbum(Albumes*& cabeza, int id, string titulo, int anno) {
     Albumes* nueva = new Albumes(id, titulo, anno);
 
     if (cabeza==nullptr) {
@@ -158,6 +169,12 @@ void insertarGeneroMusical (int id, string nombre, string descripcion){
 }
 
 //Funciones de Playlists
+void insertarPlaylist(int id, string nombre, string creador,string fecha){
+    Playlist * np = new Playlist(id,nombre,creador,fecha);
+    np -> sig = primeroP;
+    primeroP = np;
+}
+
 
 //Funciones de Sellos Discograficos
 
