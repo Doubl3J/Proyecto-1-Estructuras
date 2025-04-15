@@ -23,22 +23,6 @@ struct Canciones {
 
 }*primeroC;
 
-//Lista doble ordenada alfabeticamente
-struct Artistas {
-    int ID;
-    string Nombre_Artistico;
-    string Nombre_Real;
-    string Pais;
-    string Sello_Discografico;
-
-    Artistas * sig;
-    Artistas * ant;
-
-    Albumes * album;
-    Canciones * cancion;
-
-}*primeroArt;
-
 //Lista simple Ins al final
 struct Albumes {
     int ID;
@@ -60,6 +44,24 @@ struct Albumes {
     }
 
 }*primeroAlb;
+
+//Lista doble ordenada alfabeticamente
+struct Artistas {
+    int ID;
+    string Nombre_Artistico;
+    string Nombre_Real;
+    string Pais;
+    string Sello_Discografico;
+
+    Artistas * sig;
+    Artistas * ant;
+
+    Albumes * album;
+    Canciones * cancion;
+
+}*primeroArt;
+
+
 
 
 //Lista circular Ins al final
