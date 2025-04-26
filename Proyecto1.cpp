@@ -155,7 +155,7 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 
 
 //Funciones de Album
-void insertaralbum(int id, string titulo, int anno) {
+void insertarAlbum(int id, string titulo, int anno) {
     Albumes* nueva = new Albumes(id, titulo, anno);
 
     if (primeroAlb==nullptr) {
@@ -277,7 +277,7 @@ int main (){
     insertarArtistas(101,"Beabadoobee","Beatrice Kristi Laus","Philippines","DirtyHit");
     insertarArtistas(505,"J. Cole","Jermaine Cole","USA","DreamvilleRecords");
     insertarArtistas(808,"Future","Nayvadius DeMun Wilburn","USA","EpicRecords");
-    
+
     imprimirArtistas();
 
     return 0;
