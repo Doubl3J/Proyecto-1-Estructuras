@@ -159,10 +159,12 @@ Canciones * buscarCancion(string titulo){
         if (temp -> Titulo == titulo){
             return temp;
         }
+        temp = temp -> sig;
     }
     return nullptr;
 }
 
+//Modificaciones
 void modificarIDCancion(string titulo, int id){
     Canciones * cancion = buscarCancion(titulo);
     if (cancion == nullptr){
@@ -250,15 +252,19 @@ void insertarAlbum(int id, string titulo, int anno) {
     }
 }
 
+
 Albumes * buscarAlbum (string titulo){
     Albumes * temp = primeroAlb;
     while (temp != nullptr){
         if (temp -> Titulo == titulo){
             return temp;
         }
+        temp = temp -> sig;
     }
+    return nullptr;
 }
 
+//Modificaciones
 void modificarIDAlbum(string titulo, int id){
     Albumes * album = buscarAlbum(titulo);
     if (album == nullptr){
@@ -303,6 +309,22 @@ void modificarNCancionesAlbum(string titulo,int n){
     }
 }
 
+void eliminarAlbum(string titulo){
+    Albumes * temp = primeroAlb;
+    Albumes * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> Titulo == titulo){
+            tempAnt -> sig = temp -> sig;
+            cout << "Album eliminado " << endl;
+            delete temp;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
+    cout << "Album no encontrado " << endl;
+}
+
 
 
 //Funciones de Artistas
@@ -341,6 +363,75 @@ void insertarArtistas (int id, string nombre_artistico, string nombre_real, stri
     }
 }
 
+Artistas * buscarArtista (string nombre_artistico){
+    Artistas * temp = primeroArt;
+    while (temp != nullptr){
+        if (temp -> Nombre_Artistico == nombre_artistico){
+            return temp;
+        }
+        temp = temp -> sig;
+    }
+    return nullptr;
+}
+
+//Modificaciones
+void modificarIDArtista(string nombre_artistico, int id){
+    Artistas * artista = buscarArtista(nombre_artistico);
+    if (artista == nullptr){
+        cout << "Artista no encontrado " << endl;
+    }
+    else{
+        cout << "ID de Artista modificado " << endl;
+        artista -> ID = id;
+    }
+}
+
+void modificarNArtisticoArtista(string nombre_artisticoOG, string nombre_artisticoNV){
+    Artistas * artista = buscarArtista(nombre_artisticoOG);
+    if (artista == nullptr){
+        cout << "Artista no encontrado " << endl;
+    }
+    else{
+        cout << "Nombre Artistico de Artista modificado " << endl;
+        artista -> Nombre_Artistico = nombre_artisticoNV;
+    }
+}
+
+void modificarNRealArtista(string nombre_artistico, string nombre_real){
+    Artistas * artista = buscarArtista(nombre_artistico);
+    if (artista == nullptr){
+        cout << "Artista no encontrado " << endl;
+    }
+    else{
+        cout << "Nombre Real de Artista modificado " << endl;
+        artista -> Nombre_Real = nombre_real;
+    }
+}
+
+void modificarPaisArtista(string nombre_artistico, string pais){
+    Artistas * artista = buscarArtista(nombre_artistico);
+    if (artista == nullptr){
+        cout << "Artista no encontrado " << endl;
+    }
+    else{
+        cout << "Pais de Artista modificado " << endl;
+        artista -> Pais = pais;
+    }
+}
+
+void modificarSDiscograficoArtista(string nombre_artistico, string sello_discografico){
+    Artistas * artista = buscarArtista(nombre_artistico);
+    if (artista == nullptr){
+        cout << "Artista no encontrado " << endl;
+    }
+    else{
+        cout << "Sello Discografico de Artista modificado " << endl;
+        artista -> Sello_Discografico = sello_discografico;
+    }
+}
+
+
+
 void imprimirArtistas(){
 
     Artistas * temp = primeroArt;
@@ -375,6 +466,56 @@ void insertarGeneroMusical (int id, string nombre, string descripcion){
     }
 }
 
+Generos_Musicales * buscarGeneroMusical (string nombre){
+    if (primeroG == nullptr){
+        return nullptr;
+    }
+    Generos_Musicales * temp = primeroG;
+    do {
+        if (temp -> Nombre == nombre){
+            return temp;
+        }
+        temp = temp -> sig;
+    }
+    while (temp != primeroG);
+    return nullptr;
+    
+}
+
+//Modificaciones
+void modificarIDGeneroMusical(string nombre, int id){
+    Generos_Musicales * genero_musical = buscarGeneroMusical(nombre);
+    if (genero_musical == nullptr){
+        cout << "Genero Musical no encontrado " << endl;
+    }
+    else{
+        cout << "ID de Genero Musical modificado " << endl;
+        genero_musical -> ID = id;
+    }
+}
+
+void modificarIDGeneroMusical(string nombreOG, string nombreNV){
+    Generos_Musicales * genero_musical = buscarGeneroMusical(nombreOG);
+    if (genero_musical == nullptr){
+        cout << "Genero Musical no encontrado " << endl;
+    }
+    else{
+        cout << "Nombre de Genero Musical modificado " << endl;
+        genero_musical -> Nombre = nombreNV;
+    }
+}
+
+void modificarIDGeneroMusical(string nombre, string descripcion){
+    Generos_Musicales * genero_musical = buscarGeneroMusical(nombre);
+    if (genero_musical == nullptr){
+        cout << "Genero Musical no encontrado " << endl;
+    }
+    else{
+        cout << "ID de Genero Musical modificado " << endl;
+        genero_musical -> Descripcion = descripcion;
+    }
+}
+
 //Funciones de Playlists 
 void insertarPlaylist(int id, string nombre, string creador,string fecha){
     Playlist * np = new Playlist(id,nombre,creador,fecha);
@@ -382,9 +523,65 @@ void insertarPlaylist(int id, string nombre, string creador,string fecha){
     primeroP = np;
 }
 
+Playlist * buscarPlaylist (string nombre){
+    Playlist * temp = primeroP;
+    while (temp != nullptr){
+        if (temp -> Nombre == nombre){
+            return temp;
+        }
+        temp = temp -> sig;
+    }
+    return nullptr;
+}
+
+//Modificaciones
+void modificarIDPlaylist(string nombre, int id){
+    Playlist * playlist = buscarPlaylist(nombre);
+    if (playlist == nullptr){
+        cout << "Playlist no encontrado " << endl;
+    }
+    else{
+        cout << "ID de Playlist modificado " << endl;
+        playlist -> ID = id;
+    }
+}
+
+void modificarNombrePlaylist(string nombreOG, string nombreNV){
+    Playlist * playlist = buscarPlaylist(nombreOG);
+    if (playlist == nullptr){
+        cout << "Playlist no encontrado " << endl;
+    }
+    else{
+        cout << "Nombre de Playlist modificado " << endl;
+        playlist -> Nombre = nombreNV;
+    }
+}
+
+void modificarCreadorPlaylist(string nombre, string creador){
+    Playlist * playlist = buscarPlaylist(nombre);
+    if (playlist == nullptr){
+        cout << "Playlist no encontrado " << endl;
+    }
+    else{
+        cout << "Creador de Playlist modificado " << endl;
+        playlist -> Creador = creador;
+    }
+}
+
+void modificarFechaPlaylist(string nombre, string fecha){
+    Playlist * playlist = buscarPlaylist(nombre);
+    if (playlist == nullptr){
+        cout << "Playlist no encontrado " << endl;
+    }
+    else{
+        cout << "Fecha de Playlist modificada " << endl;
+        playlist -> Fecha = fecha;
+    }
+}
+
 
 //Funciones de Sellos Discograficos
-void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de_fundacion) {
+void insertarSellosDiscograficos(int id, string nombre, string pais, int anno_de_fundacion) {
     Sellos_Discograficos* NSD = new Sellos_Discograficos(id, nombre, pais, anno_de_fundacion);
 
     if (primeroSD == nullptr) {
@@ -400,6 +597,65 @@ void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de
     }
 }
 
+Sellos_Discograficos * buscarSellosDiscograficos (string nombre){
+    if (primeroSD == nullptr){
+        return nullptr;
+    }
+    Sellos_Discograficos * temp = primeroSD;
+    do {
+        if (temp -> Nombre == nombre){
+            return temp;
+        }
+        temp = temp -> sig;
+    }
+    while (temp != primeroSD);
+    return nullptr;
+}
+
+//Modificaciones
+void modificarIDSelloDiscografico (string nombre, int id){
+    Sellos_Discograficos * sello_discografico = buscarSellosDiscograficos(nombre);
+    if (sello_discografico == nullptr){
+        cout << "Sello Discografico no encontrado " << endl;
+    }
+    else{
+        cout << "ID de Sello Discografico modificado " << endl;
+        sello_discografico -> ID = id;
+    }
+}
+
+void modificarNombreSelloDiscografico (string nombreOG, string nombreNV){
+    Sellos_Discograficos * sello_discografico = buscarSellosDiscograficos(nombreOG);
+    if (sello_discografico == nullptr){
+        cout << "Sello Discografico no encontrado " << endl;
+    }
+    else{
+        cout << "Nombre de Sello Discografico modificado " << endl;
+        sello_discografico -> Nombre = nombreNV;
+    }
+}
+
+void modificarPaisSelloDiscografico (string nombre, string pais){
+    Sellos_Discograficos * sello_discografico = buscarSellosDiscograficos(nombre);
+    if (sello_discografico == nullptr){
+        cout << "Sello Discografico no encontrado " << endl;
+    }
+    else{
+        cout << "Pais de Sello Discografico modificado " << endl;
+        sello_discografico -> Pais = pais;
+    }
+}
+
+void modificarAnnoFundacionSelloDiscografico (string nombre, int anno_fundacion){
+    Sellos_Discograficos * sello_discografico = buscarSellosDiscograficos(nombre);
+    if (sello_discografico == nullptr){
+        cout << "Sello Discografico no encontrado " << endl;
+    }
+    else{
+        cout << "Año de fundacion de Sello Discografico modificado " << endl;
+        sello_discografico -> Anno_fundacion = anno_fundacion;
+    }
+}
 
 
 int main (){
