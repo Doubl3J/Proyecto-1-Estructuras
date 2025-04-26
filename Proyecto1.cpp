@@ -78,25 +78,6 @@ struct Artistas {
 
 
 
-//Lista doble ordenada alfabeticamente
-struct Artistas {
-    int ID;
-    string Nombre_Artistico;
-    string Nombre_Real;
-    string Pais;
-    string Sello_Discografico;
-
-    Artistas * sig;
-    Artistas * ant;
-
-    Albumes * album;
-    Canciones * cancion;
-
-}*primeroArt;
-
-
-
-
 //Lista circular Ins al final
 struct Generos_Musicales {
     int ID;
@@ -190,7 +171,54 @@ void insertaralbum(int id, string titulo, int anno) {
 
 //Funciones de Artistas
 void insertarArtistas (int id, string nombre_artistico, string nombre_real, string pais, string sello_discografico){
-    
+    Artistas * nuevoA = new Artistas (id, nombre_artistico, nombre_real, pais, sello_discografico);
+    if (primeroArt == nullptr){
+        primeroArt = nuevoA;
+    }
+    else{
+        Artistas * temp = primeroArt;
+        Artistas * tempAnt = nullptr;
+        
+        //mientras que nuevoA vaya siguiente alfabeticamente que temp
+        while (temp != nullptr && nuevoA -> Nombre_Artistico > temp -> Nombre_Artistico ){
+            tempAnt = temp;
+            temp = temp -> sig;
+        }
+        //nuevoA va antes alfabeticamente que el primer nodo
+        if (temp == primeroArt){
+            temp -> ant = nuevoA;
+            nuevoA -> sig = temp;
+            primeroArt = nuevoA;
+        }
+        //nuevoA esta en el medio
+        else if(tempAnt != nullptr && temp != nullptr){
+            tempAnt -> sig = nuevoA;
+            nuevoA -> ant = tempAnt;
+            nuevoA -> sig = temp;
+            temp -> ant = nuevoA;
+        }
+        //nuevoA esta en el final y por lo tanto temp es nullptr
+        else{
+            tempAnt -> sig = nuevoA;
+            nuevoA -> ant = tempAnt;
+        }
+    }
+}
+
+void imprimirArtistas(){
+
+    Artistas * temp = primeroArt;
+
+    while (temp != nullptr){
+        cout << "---------------------------------" << endl;
+        cout << "Nombre Artistico: " << temp -> Nombre_Artistico << endl;
+        cout << "Nombre Real: " << temp -> Nombre_Real << endl;
+        cout << "Pais: " << temp -> Pais << endl;
+        cout << "Sello Discografico: " <<temp -> Sello_Discografico << endl;
+
+        temp = temp -> sig;
+    }
+
 }
 
 //Funciones de Genero Musical
@@ -217,6 +245,8 @@ void insertarPlaylist(int id, string nombre, string creador,string fecha){
     np -> sig = primeroP;
     primeroP = np;
 }
+
+
 //Funciones de Sellos Discograficos
 void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de_fundacion) {
     Sellos_Discograficos* NSD = new Sellos_Discograficos(id, nombre, pais, anno_de_fundacion);
@@ -233,6 +263,22 @@ void insertarsellosdiscograficos(int id, string nombre, string pais, int anno_de
         primeroSD->ant = NSD;
     }
 }
+
+
+
 int main (){
+
+
+    //Test cases
+    insertarArtistas(456,"Yoasobi","Lilas","Japan","SonyJP");
+    insertarArtistas(123,"Clairo","Claire","USA","IDK");
+    insertarArtistas(789,"Gunna","Sergio","USA","AtlanticRecords");
+    insertarArtistas(303,"Men I Trust","Men I Trust","Canada","Independent");
+    insertarArtistas(101,"Beabadoobee","Beatrice Kristi Laus","Philippines","DirtyHit");
+    insertarArtistas(505,"J. Cole","Jermaine Cole","USA","DreamvilleRecords");
+    insertarArtistas(808,"Future","Nayvadius DeMun Wilburn","USA","EpicRecords");
+    
+    imprimirArtistas();
+
     return 0;
 }
