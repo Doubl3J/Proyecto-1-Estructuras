@@ -213,6 +213,21 @@ void modificarIDArtistaCancion(string titulo, int ID_Art){
     }
 }
 
+void eliminarCancion(string titulo){
+    Canciones * temp = buscarCancion(titulo);
+    Canciones * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> Titulo == titulo){
+            tempAnt -> sig = temp -> sig;
+            cout << "Cancion eliminada " << endl;
+            delete temp;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
+    cout << "Cancion no encontrada " << endl;
+}
 
 
 //Funciones de Album
