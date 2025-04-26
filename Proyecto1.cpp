@@ -158,7 +158,7 @@ void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artis
 void insertarAlbum(int id, string titulo, int anno) {
     Albumes* nueva = new Albumes(id, titulo, anno);
 
-    if (primeroAlb==nullptr) {
+    if (primeroAlb == nullptr) {
         primeroAlb = nueva;
     } else {
         Albumes* actual = primeroAlb;
