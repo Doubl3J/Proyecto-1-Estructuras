@@ -169,6 +169,7 @@ void modificarIDCancion(string titulo, int id){
         cout << "Cancion no encontrada " << endl;
     }
     else{
+        cout << "ID de Cancion modificado " << endl;
         cancion -> ID = id;
     }
 }
@@ -179,6 +180,7 @@ void modificarTituloCancion(string tituloOG, string tituloNV){
         cout << "Cancion no encontrada " << endl;
     }
     else{
+        cout << "Titulo de Cancion modificado " << endl;
         cancion -> Titulo = tituloNV;
     }
 }
@@ -189,6 +191,7 @@ void modificarDuracionCancion(string titulo, int duracion){
         cout << "Cancion no encontrada " << endl;
     }
     else{
+        cout << "Duracion de Cancion modificada " << endl;
         cancion -> Duracion = duracion;
     }
 }
@@ -199,6 +202,7 @@ void modificarIDAlbumCancion(string titulo, int ID_Alb){
         cout << "Cancion no encontrada " << endl;
     }
     else{
+        cout << "ID de Album de Cancion modificado " << endl;
         cancion -> ID_Album = ID_Alb;
     }
 }
@@ -209,12 +213,13 @@ void modificarIDArtistaCancion(string titulo, int ID_Art){
         cout << "Cancion no encontrada " << endl;
     }
     else{
+        cout << "ID de Artista de Cancion modificado " << endl;
         cancion -> ID_Artista = ID_Art;
     }
 }
 
 void eliminarCancion(string titulo){
-    Canciones * temp = buscarCancion(titulo);
+    Canciones * temp = primeroC;
     Canciones * tempAnt = temp;
     while (temp != nullptr){
         if (temp -> Titulo == titulo){
@@ -244,6 +249,61 @@ void insertarAlbum(int id, string titulo, int anno) {
         actual->sig = nueva;
     }
 }
+
+Albumes * buscarAlbum (string titulo){
+    Albumes * temp = primeroAlb;
+    while (temp != nullptr){
+        if (temp -> Titulo == titulo){
+            return temp;
+        }
+    }
+}
+
+void modificarIDAlbum(string titulo, int id){
+    Albumes * album = buscarAlbum(titulo);
+    if (album == nullptr){
+        cout << "Album no encontrado " << endl;
+    }
+    else{
+        cout << "ID de Album modificado " << endl;
+        album -> ID = id;
+    }
+}
+
+void modificarTituloAlbum(string tituloOG, string tituloNV){
+    Albumes * album = buscarAlbum(tituloOG);
+    if (album == nullptr){
+        cout << "Album no encontrado " << endl;
+    }
+    else{
+        cout << "Titulo de Album modificado " << endl;
+        album -> Titulo = tituloNV;
+    }
+}
+
+void modificarAnnoAlbum(string titulo, int anno){
+    Albumes * album = buscarAlbum(titulo);
+    if (album == nullptr){
+        cout << "Album no encontrado " << endl;
+    }
+    else{
+        cout << "Año de Album modificado " << endl;
+        album -> Anno = anno;
+    }
+}
+
+void modificarNCancionesAlbum(string titulo,int n){
+    Albumes * album = buscarAlbum(titulo);
+    if (album == nullptr){
+        cout << "Album no encontrado " << endl;
+    }
+    else{
+        cout << "Numero de canciones de Album modificado " << endl;
+        album -> N_canciones = n;
+    }
+}
+
+
 
 //Funciones de Artistas
 void insertarArtistas (int id, string nombre_artistico, string nombre_real, string pais, string sello_discografico){
