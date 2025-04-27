@@ -536,8 +536,30 @@ void insertarCancionArtista(string tituloArt, string tituloC){
     }
 }
 
-void eliminarArtistas(){
-    
+void eliminarArtista(string tituloAlb){
+    Artistas * temp = buscarArtista(tituloAlb);
+    if (temp == nullptr){
+        cout << "Artista no encontrado " << endl;
+        return;
+    }
+    if (temp == primeroArt){
+        primeroArt = temp -> sig;
+
+        if (primeroArt != nullptr){
+            primeroArt -> ant = nullptr;
+        }
+
+        delete temp;
+    }
+    else{
+        if (temp -> ant != nullptr){
+            temp -> ant -> sig = temp -> sig;
+        }
+        if (temp -> sig != nullptr){
+            temp -> sig -> ant = temp -> ant;
+        }
+        delete temp;
+    }
 }
 
 void eliminarCancionArtistaAux(Artistas * artista, Canciones * cancion){
@@ -558,7 +580,7 @@ void eliminarCancionArtista(string tituloArt, string tituloC){
     Artistas * artista = buscarArtista(tituloArt);
     Canciones * cancion = buscarCancion(tituloC);
     if (cancion == nullptr || artista == nullptr){
-        cout << "Artista o album no encontrado " << endl;
+        cout << "Artista o cancion no encontrada " << endl;
     }
     else{
         if (artista -> canciones -> cancion -> Titulo == tituloC){
@@ -572,11 +594,55 @@ void eliminarCancionArtista(string tituloArt, string tituloC){
 }
 
 void insertarAlbumArtista(string tituloArt, string tituloAlb){
+    Artistas * artista = buscarArtista(tituloArt);
+    Albumes * album = buscarAlbum(tituloAlb);
+    if (artista == nullptr || album == nullptr){
+        cout << "Artista o album no encontrado " << endl;
+    }
+    else{
+        Sublista_Albumes * nSub = new Sublista_Albumes(album);
+        if (artista -> albumes == nullptr){
+            artista -> albumes = nSub;
+        }
+        else{
+            Sublista_Albumes * temp = artista -> albumes;
+            while (temp -> sig != nullptr){
+                temp = temp -> sig;
+            }
+            temp -> sig = nSub;
+        }
+    }
+}
 
+void eliminarAlbumArtistaAux(Artistas * artista, Albumes * album){
+    Sublista_Albumes * temp = artista -> albumes;
+    Sublista_Albumes * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> album == album){
+            tempAnt -> sig = temp -> sig;
+            cout << "Album eliminado de artista " << endl;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
 }
 
 void eliminarAlbumArtista(string tituloArt, string tituloAlb){
-
+    Artistas * artista = buscarArtista(tituloArt);
+    Albumes * album = buscarAlbum(tituloAlb);
+    if (artista == nullptr || album == nullptr){
+        cout << "Artista o album no encontrado " << endl;
+    }
+    else{
+        if (artista -> albumes -> album -> Titulo == tituloAlb){
+            artista -> albumes = artista -> albumes -> sig;
+            cout << "Album eliminado de artista " << endl;
+        }
+        else{
+            eliminarAlbumArtistaAux(artista,album);
+        }
+    }
 }
 
 
@@ -663,6 +729,101 @@ void modificarIDGeneroMusical(string nombre, string descripcion){
     else{
         cout << "ID de Genero Musical modificado " << endl;
         genero_musical -> Descripcion = descripcion;
+    }
+}
+
+void eliminarGeneroMusical (string nombre){
+    if (primeroG == nullptr){
+        cout << "No hay generos musicales" << endl;
+        return;
+    }
+
+    Generos_Musicales * temp = primeroG;
+    Generos_Musicales * tempAnt = nullptr;
+
+    do {
+        if (temp -> Nombre == nombre){
+            //eliminar cualquier otro nodo
+            if (tempAnt != nullptr){
+
+                tempAnt -> sig = temp -> sig;
+
+                if (temp == primeroG){
+                    primeroG = temp -> sig;
+                }
+            }
+            else{
+                //eliminar primer nodo
+                primeroG = temp -> sig;
+
+                if (primeroG == temp){
+                    primeroG = nullptr;
+                }
+                else{
+                    Generos_Musicales * ult = primeroG;
+
+                    while (ult -> sig != temp){
+                        ult = ult -> sig;
+                    }
+                    ult -> sig = primeroG;
+                }
+            }
+            delete temp;
+            return;
+        }
+    } while (temp != primeroG);
+    cout << "El genero musical no se encuentra ingresado " << endl;
+}
+
+void insertarCancionGeneroMusical(string nombre, string tituloC){
+    Generos_Musicales * gm = buscarGeneroMusical(nombre);
+    Canciones * cancion = buscarCancion(tituloC);
+    if (cancion == nullptr || gm == nullptr){
+        cout << "Genero musical o cancion no encontrada " << endl;
+    }
+    else{
+        Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
+        if (gm -> canciones == nullptr){
+            gm -> canciones = nSub;
+        }
+        else{
+            Sublista_Canciones * temp = gm -> canciones;
+            while (temp -> sig != nullptr){
+                temp = temp -> sig;
+            }
+            temp -> sig = nSub;
+        }
+    }
+}
+
+void eliminarCancionGeneroMusicalAux(Generos_Musicales * gm, Canciones * cancion){
+    Sublista_Canciones * temp = gm -> canciones;
+    Sublista_Canciones * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> cancion == cancion){
+            tempAnt -> sig = temp -> sig;
+            cout << "Cancion eliminada de genero musical" << endl;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
+}
+
+void eliminarCancionGeneroMusical(string nombre, string tituloC){
+    Generos_Musicales * gm = buscarGeneroMusical(nombre);
+    Canciones * cancion = buscarCancion(tituloC);
+    if (cancion == nullptr || gm == nullptr){
+        cout << "Genero musical o cancion no encontrada " << endl;
+    }
+    else{
+        if (gm -> canciones -> cancion -> Titulo == tituloC){
+            gm -> canciones = gm -> canciones -> sig;
+            cout << "Cancion elimnada de genero musical " << endl;
+        }
+        else{
+            eliminarCancionGeneroMusicalAux(gm,cancion);
+        }
     }
 }
 
