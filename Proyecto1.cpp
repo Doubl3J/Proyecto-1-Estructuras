@@ -357,6 +357,8 @@ void eliminarAlbum(string titulo){
     cout << "Album no encontrado " << endl;
 }
 
+//Modificacion de sublistas
+
 //Considerar cambiar esto a que cuando se inserte sea por la duracion de la cancion de alto a menos para ahorrarnos trabajo a la hora de imprimir (Ver requisitos de reportes)
 void insertarCancionAlbum(string tituloAlb, string tituloC){
     Albumes * album = buscarAlbum(tituloAlb);
@@ -515,27 +517,6 @@ void modificarSDiscograficoArtista(string nombre_artistico, string sello_discogr
     }
 }
 
-void insertarCancionArtista(string tituloArt, string tituloC){
-    Artistas * artista = buscarArtista(tituloArt);
-    Canciones * cancion = buscarCancion(tituloC);
-    if (cancion == nullptr || artista == nullptr){
-        cout << "Artista o album no encontrado " << endl;
-    }
-    else{
-        Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
-        if (artista -> canciones == nullptr){
-            artista -> canciones = nSub;
-        }
-        else{
-            Sublista_Canciones * temp = artista -> canciones;
-            while (temp -> sig != nullptr){
-                temp = temp -> sig;
-            }
-            temp -> sig = nSub;
-        }
-    }
-}
-
 void eliminarArtista(string tituloAlb){
     Artistas * temp = buscarArtista(tituloAlb);
     if (temp == nullptr){
@@ -562,6 +543,31 @@ void eliminarArtista(string tituloAlb){
     }
 }
 
+//Modificacion de sublistas
+
+void insertarCancionArtista(string nombreArt, string tituloC){
+    Artistas * artista = buscarArtista(nombreArt);
+    Canciones * cancion = buscarCancion(tituloC);
+    if (cancion == nullptr || artista == nullptr){
+        cout << "Artista o album no encontrado " << endl;
+    }
+    else{
+        Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
+        if (artista -> canciones == nullptr){
+            artista -> canciones = nSub;
+        }
+        else{
+            Sublista_Canciones * temp = artista -> canciones;
+            while (temp -> sig != nullptr){
+                temp = temp -> sig;
+            }
+            temp -> sig = nSub;
+        }
+    }
+}
+
+
+
 void eliminarCancionArtistaAux(Artistas * artista, Canciones * cancion){
     Sublista_Canciones * temp = artista -> canciones;
     Sublista_Canciones * tempAnt = temp;
@@ -574,10 +580,11 @@ void eliminarCancionArtistaAux(Artistas * artista, Canciones * cancion){
         tempAnt = temp;
         temp = temp -> sig;
     }
+    cout << "Cancion no existe o no pertenece al Artista seleccionado " << endl;
 }
 
-void eliminarCancionArtista(string tituloArt, string tituloC){
-    Artistas * artista = buscarArtista(tituloArt);
+void eliminarCancionArtista(string nombreArt, string tituloC){
+    Artistas * artista = buscarArtista(nombreArt);
     Canciones * cancion = buscarCancion(tituloC);
     if (cancion == nullptr || artista == nullptr){
         cout << "Artista o cancion no encontrada " << endl;
@@ -593,8 +600,8 @@ void eliminarCancionArtista(string tituloArt, string tituloC){
     }
 }
 
-void insertarAlbumArtista(string tituloArt, string tituloAlb){
-    Artistas * artista = buscarArtista(tituloArt);
+void insertarAlbumArtista(string nombreArt, string tituloAlb){
+    Artistas * artista = buscarArtista(nombreArt);
     Albumes * album = buscarAlbum(tituloAlb);
     if (artista == nullptr || album == nullptr){
         cout << "Artista o album no encontrado " << endl;
@@ -626,6 +633,7 @@ void eliminarAlbumArtistaAux(Artistas * artista, Albumes * album){
         tempAnt = temp;
         temp = temp -> sig;
     }
+    cout << "Album no existe o no pertenece al Artista seleccionado " << endl;
 }
 
 void eliminarAlbumArtista(string tituloArt, string tituloAlb){
@@ -775,6 +783,8 @@ void eliminarGeneroMusical (string nombre){
     cout << "El genero musical no se encuentra ingresado " << endl;
 }
 
+//Modificacion de sublistas
+
 void insertarCancionGeneroMusical(string nombre, string tituloC){
     Generos_Musicales * gm = buscarGeneroMusical(nombre);
     Canciones * cancion = buscarCancion(tituloC);
@@ -808,6 +818,7 @@ void eliminarCancionGeneroMusicalAux(Generos_Musicales * gm, Canciones * cancion
         tempAnt = temp;
         temp = temp -> sig;
     }
+    cout << "Cancion no existe o no esta en el Genero Musical seleccionado " << endl;
 }
 
 void eliminarCancionGeneroMusical(string nombre, string tituloC){
@@ -890,6 +901,77 @@ void modificarFechaPlaylist(string nombre, string fecha){
     }
 }
 
+void eliminarPlaylist(string nombre){
+    Playlist * temp = primeroP;
+    Playlist * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> Nombre == nombre){
+            tempAnt -> sig = temp -> sig;
+            cout << "Playlist eliminada " << endl;
+            delete temp;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
+    cout << "Playlist no encontrada " << endl;
+}
+
+//Modificacion de sublistas
+void insertarCancionPlaylist(string nombre, string tituloC){
+    Playlist * playlist = buscarPlaylist(nombre);
+    Canciones * cancion = buscarCancion(tituloC);
+    if (cancion == nullptr || playlist == nullptr){
+        cout << "Playlist o cancion no encontrada " << endl;
+    }
+    else{
+        Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
+        if (playlist -> canciones == nullptr){
+            playlist -> canciones = nSub;
+        }
+        else{
+            Sublista_Canciones * temp = playlist -> canciones;
+            while (temp -> sig != nullptr){
+                temp = temp -> sig;
+            }
+            temp -> sig = nSub;
+        }
+    }
+}
+
+void eliminarCancionPlaylistAux(Playlist * playlist, Canciones * cancion){
+    Sublista_Canciones * temp = playlist -> canciones;
+    Sublista_Canciones * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> cancion == cancion){
+            tempAnt -> sig = temp -> sig;
+            cout << "Cancion eliminada de playlist" << endl;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
+    cout << "Cancion no existe o no esta en el Playlist seleccionado " << endl;
+}
+
+void eliminarCancionPlaylist(string nombre, string tituloC){
+    Playlist * playlist = buscarPlaylist(nombre);
+    Canciones * cancion = buscarCancion(tituloC);
+    if (cancion == nullptr || playlist == nullptr){
+        cout << "Playlist o cancion no encontrada " << endl;
+    }
+    else{
+        if (playlist -> canciones -> cancion -> Titulo == tituloC){
+            playlist -> canciones = playlist -> canciones -> sig;
+            cout << "Cancion eliminada de playlist " << endl;
+        }
+        else{
+            eliminarCancionPlaylistAux(playlist,cancion);
+        }
+    }
+}
+
+
 
 //Funciones de Sellos Discograficos
 void insertarSellosDiscograficos(int id, string nombre, string pais, int anno_de_fundacion) {
@@ -965,6 +1047,83 @@ void modificarAnnoFundacionSelloDiscografico (string nombre, int anno_fundacion)
     else{
         cout << "Año de fundacion de Sello Discografico modificado " << endl;
         sello_discografico -> Anno_fundacion = anno_fundacion;
+    }
+}
+
+void eliminarSelloDiscografico(string nombre){
+    Sellos_Discograficos * temp = buscarSellosDiscograficos(nombre);
+    if (temp == nullptr){
+        cout << "Sello Discografico no encontrado " << endl;
+        return;
+    }
+    if (temp == primeroSD){
+        primeroSD = temp -> sig;
+
+        if (primeroSD != nullptr){
+            primeroSD -> ant = nullptr;
+        }
+
+        delete temp;
+    }
+    else{
+        temp -> ant -> sig = temp -> sig;
+        temp -> sig -> ant = temp -> ant;
+        delete temp;
+    }
+
+}
+
+//Modificacion de sublistas
+void insertarArtistaSelloDiscografico(string nombre, string nombreArt){
+    Sellos_Discograficos * sd = buscarSellosDiscograficos(nombre);
+    Artistas * artista = buscarArtista(nombreArt);
+    if (sd == nullptr || artista == nullptr){
+        cout << "Sello Discografico o artista no encontrado " << endl;
+    }
+    else{
+        Sublista_Artistas * nSub = new Sublista_Artistas (artista);
+        if (sd -> artistas == nullptr){
+            sd -> artistas = nSub;
+        }
+        else{
+            Sublista_Artistas * temp = sd -> artistas;
+            while (temp -> sig != nullptr){
+                temp = temp -> sig;
+            }
+            temp -> sig = nSub;
+        }
+    }
+}
+
+void eliminarArtistaSelloDiscograficoAux(Sellos_Discograficos * sd, Artistas * artista){
+    Sublista_Artistas * temp = sd -> artistas;
+    Sublista_Artistas * tempAnt = temp;
+    while (temp != nullptr){
+        if (temp -> artista == artista){
+            tempAnt -> sig = temp -> sig;
+            cout << "Artista eliminado de Sello Discografico " << endl;
+            return;
+        }
+        tempAnt = temp;
+        temp = temp -> sig;
+    }
+    cout << "Artista no existe o no pertenece al sello discografico seleccionado " << endl;
+}
+
+void eliminarArtistaSelloDiscografico(string nombre, string nombreArt){
+    Sellos_Discograficos * sd = buscarSellosDiscograficos(nombre);
+    Artistas * artista = buscarArtista(nombreArt);
+    if (sd == nullptr || artista == nullptr){
+        cout << "Sello Discografico o artista no encontrado " << endl;
+    }
+    else{
+        if (sd -> artistas -> artista -> Nombre_Artistico == nombreArt){
+            sd -> artistas = sd -> artistas -> sig;
+            cout << "Artista eliminado de Sello Discografico " << endl;
+        }
+        else{
+            eliminarArtistaSelloDiscograficoAux(sd,artista);
+        }
     }
 }
 
