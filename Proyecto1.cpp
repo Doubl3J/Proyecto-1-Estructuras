@@ -115,7 +115,7 @@ struct Generos_Musicales {
 
     Generos_Musicales * sig;
 
-    Canciones * cancion;
+    Sublista_Canciones * cancion;
 
     Generos_Musicales(int id, string nombre, string descripcion){
         ID = id;
