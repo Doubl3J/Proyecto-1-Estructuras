@@ -23,6 +23,16 @@ struct Canciones {
 
 }*primeroC;
 
+struct Sublista_Canciones{
+    Canciones * cancion;
+    Sublista_Canciones * sig;
+
+    Sublista_Canciones(Canciones * c){
+        cancion = c;
+        sig = nullptr;
+    }
+};
+
 //Lista simple Ins al final
 struct Albumes {
     int ID;
@@ -32,7 +42,7 @@ struct Albumes {
 
     Albumes * sig;
 
-    Canciones * cancion;
+    Sublista_Canciones * cancion;
 
     Albumes(int id, string titulo, int anno) {
         ID = id;
@@ -46,6 +56,17 @@ struct Albumes {
 
 }*primeroAlb;
 
+struct Sublista_Albumes{
+    Albumes * album;
+    Sublista_Albumes * sig;
+
+    Sublista_Albumes(Albumes * a){
+        album = a;
+        sig = nullptr;
+    }
+};
+
+
 //Lista doble ordenada alfabeticamente
 struct Artistas {
     int ID;
@@ -57,8 +78,8 @@ struct Artistas {
     Artistas * sig;
     Artistas * ant;
 
-    Albumes * album;
-    Canciones * canciones;
+    Sublista_Albumes * album;
+    Sublista_Canciones * canciones;
 
     Artistas(int id,string nombre_artistico, string nombre_real, string pais, string sello_discografico){
         ID = id;
@@ -76,7 +97,15 @@ struct Artistas {
 
 }*primeroArt;
 
+struct Sublista_Artistas{
+    Artistas * artista;
+    Sublista_Artistas * sig;
 
+    Sublista_Artistas(Artistas * a){
+        artista = a;
+        sig = nullptr;
+    }
+};
 
 //Lista circular Ins al final
 struct Generos_Musicales {
@@ -108,7 +137,7 @@ struct Playlist {
 
     Playlist * sig;
 
-    Canciones * cancion;
+    Sublista_Canciones * cancion;
 
     Playlist(int id, string nombre, string creador,string fecha){
         ID = id;
@@ -133,7 +162,7 @@ struct Sellos_Discograficos {
     Sellos_Discograficos* sig;
     Sellos_Discograficos* ant;
 
-    Artistas* artist;
+    Sublista_Artistas * artista;
 
     Sellos_Discograficos(int _ID, string _Nombre, string _Pais, int _Anno_fundacion) {
         ID = _ID;
@@ -141,7 +170,7 @@ struct Sellos_Discograficos {
         Pais = _Pais;
         Anno_fundacion = _Anno_fundacion;
         sig = ant = nullptr;
-        artist = nullptr;
+        artista = nullptr;
     }
 } *primeroSD = nullptr;
 
