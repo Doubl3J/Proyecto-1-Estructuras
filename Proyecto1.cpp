@@ -11,12 +11,13 @@ struct Canciones {
 
     Canciones * sig;
 
-    Canciones(int id,string t,int d,int id_al,int id_ar){
+    Canciones(int id,string t,int d){
         ID = id;
         Titulo = t;
         Duracion = d;
-        ID_Album = id_al;
-        ID_Artista = id_ar;
+        //Estos IDs se actualizan cuando se agreguen a un album o artista
+        ID_Album = 0; 
+        ID_Artista = 0;
 
         sig = nullptr;
     }
@@ -49,6 +50,7 @@ struct Albumes {
         ID = id;
         Titulo = titulo;
         Anno = anno;
+        //Se actualiza mientras se agregan canciones
         N_canciones = 0;
 
         sig = nullptr;
@@ -86,12 +88,13 @@ struct Artistas {
     //atributos agregador para consultas
     int albumes_publicados;
 
-    Artistas(int id,string nombre_artistico, string nombre_real, string pais, string sello_discografico){
+    Artistas(int id,string nombre_artistico, string nombre_real, string pais){
         ID = id;
         Nombre_Artistico = nombre_artistico;
         Nombre_Real = nombre_real;
         Pais = pais;
-        Sello_Discografico = sello_discografico;
+        //Se actualiza cuando un sello discografico lo agregue como artista
+        Sello_Discografico = "Independiente";
 
         sig = nullptr;
         ant = nullptr;
@@ -146,7 +149,7 @@ struct Playlist {
     int ID;
     string Nombre;
     string Creador;
-    string Fecha;
+    int Fecha;
 
     Playlist * sig;
 
@@ -155,7 +158,7 @@ struct Playlist {
     //atributos agregador para consultas
     int numero_canciones;
 
-    Playlist(int id, string nombre, string creador,string fecha){
+    Playlist(int id, string nombre, string creador,int fecha){
         ID = id;
         Nombre = nombre;
         Creador = creador;
@@ -202,8 +205,8 @@ struct Sellos_Discograficos {
 //Insercion y actualizacion
 
 //Funciones de Cancion
-void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artista){
-    Canciones * nc = new Canciones (id, titulo, duracion, id_album, id_artista);
+void insertarCancion(int id,string titulo,int duracion){
+    Canciones * nc = new Canciones (id, titulo, duracion);
     nc -> sig = primeroC;
     primeroC = nc;
 }
@@ -390,6 +393,7 @@ void insertarCancionAlbum(string tituloAlb, string tituloC){
         cout << "Album o cancion no encontrada " << endl;
     } 
     else{
+        cancion -> ID_Album = album -> ID;
         //Se ordena de mas duracion a menos duracion
         Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
         if (album -> canciones == nullptr){
@@ -448,8 +452,8 @@ void eliminarCancionAlbum(string tituloAlb, string tituloC){
 
 
 //Funciones de Artistas
-void insertarArtistas (int id, string nombre_artistico, string nombre_real, string pais, string sello_discografico){
-    Artistas * nuevoA = new Artistas (id, nombre_artistico, nombre_real, pais, sello_discografico);
+void insertarArtistas (int id, string nombre_artistico, string nombre_real, string pais){
+    Artistas * nuevoA = new Artistas (id, nombre_artistico, nombre_real, pais);
     if (primeroArt == nullptr){
         primeroArt = nuevoA;
     }
@@ -623,6 +627,7 @@ void eliminarCancionArtista(string nombreArt, string tituloC){
         cout << "Artista o cancion no encontrada " << endl;
     }
     else{
+        cancion -> ID_Artista = artista -> ID;
         if (artista -> canciones -> cancion -> Titulo == tituloC){
             artista -> canciones = artista -> canciones -> sig;
             cout << "Cancion eliminada de artista " << endl;
@@ -748,7 +753,7 @@ void modificarIDGeneroMusical(string nombreOG, string nombreNV){
     }
 }
 
-void modificarIDGeneroMusical(string nombre, string descripcion){
+void modificarStringGeneroMusical(string nombre, string descripcion){
     Generos_Musicales * genero_musical = buscarGeneroMusical(nombre);
     if (genero_musical == nullptr){
         cout << "Genero Musical no encontrado " << endl;
@@ -859,7 +864,7 @@ void eliminarCancionGeneroMusical(string nombre, string tituloC){
 }
 
 //Funciones de Playlists 
-void insertarPlaylist(int id, string nombre, string creador,string fecha){
+void insertarPlaylist(int id, string nombre, string creador,int fecha){
     Playlist * np = new Playlist(id,nombre,creador,fecha);
     np -> sig = primeroP;
     primeroP = np;
@@ -910,7 +915,7 @@ void modificarCreadorPlaylist(string nombre, string creador){
     }
 }
 
-void modificarFechaPlaylist(string nombre, string fecha){
+void modificarFechaPlaylist(string nombre, int fecha){
     Playlist * playlist = buscarPlaylist(nombre);
     if (playlist == nullptr){
         cout << "Playlist no encontrado " << endl;
@@ -1102,6 +1107,7 @@ void insertarArtistaSelloDiscografico(string nombre, string nombreArt){
         cout << "Sello Discografico o artista no encontrado " << endl;
     }
     else{
+        artista->Sello_Discografico = sd -> Nombre;
         sd -> numero_artistas ++;
         Sublista_Artistas * nSub = new Sublista_Artistas (artista);
         if (sd -> artistas == nullptr){
@@ -1161,6 +1167,9 @@ void imprimirCancion(Canciones * temp){
 }
 
 void imprimirCanciones(){
+    cout << "---------------------------------" << endl;
+    cout << "Imprimiendo todas las canciones " << endl; 
+    cout << "---------------------------------" << endl;
     Canciones * temp = primeroC;
     while(temp != nullptr){
         imprimirCancion(temp);
@@ -1187,6 +1196,9 @@ void imprimirAlbum(Albumes * temp, bool printDetails){
 }
 
 void imprimirAlbumes(){
+    cout << "---------------------------------" << endl;
+    cout << "Imprimiendo todos los albumes " << endl; 
+    cout << "---------------------------------" << endl;
     Albumes * temp = primeroAlb;
     while (temp != nullptr){
         imprimirAlbum(temp,true);
@@ -1221,6 +1233,9 @@ void imprimirArtista(Artistas * temp, bool printDetails){
 }
 
 void imprimirArtistas(){
+    cout << "---------------------------------" << endl;
+    cout << "Imprimiendo todos los artistas " << endl; 
+    cout << "---------------------------------" << endl;
     Artistas * temp = primeroArt;
     while (temp != nullptr){
         imprimirArtista(temp,true);
@@ -1229,6 +1244,9 @@ void imprimirArtistas(){
 }
 
 void imprimirGenerosMusicales(){
+    cout << "---------------------------------" << endl;
+    cout << "Imprimiendo todos los generos musicales" << endl; 
+    cout << "---------------------------------" << endl;
     Generos_Musicales * temp = primeroG;
     do{
         cout << "---------------------------------" << endl;
@@ -1248,6 +1266,9 @@ void imprimirGenerosMusicales(){
 }
 
 void imprimirPlaylists(){
+    cout << "---------------------------------" << endl;
+    cout << "Imprimiendo todas las playlists " << endl; 
+    cout << "---------------------------------" << endl;
     Playlist * temp = primeroP;
     while (temp != nullptr){
         cout << "---------------------------------" << endl;
@@ -1267,6 +1288,9 @@ void imprimirPlaylists(){
 }
 
 void imprimirSellosDiscograficos(){
+    cout << "---------------------------------" << endl;
+    cout << "Imprimiendo todos los sellos discograficos " << endl; 
+    cout << "---------------------------------" << endl;
     Sellos_Discograficos * temp = primeroSD;
     do{
         cout << "---------------------------------" << endl;
@@ -1399,15 +1423,69 @@ int main (){
 
 
     //Test cases
-    insertarArtistas(456,"Yoasobi","Lilas","Japan","SonyJP");
-    insertarArtistas(123,"Clairo","Claire","USA","IDK");
-    insertarArtistas(789,"Gunna","Sergio","USA","AtlanticRecords");
-    insertarArtistas(303,"Men I Trust","Men I Trust","Canada","Independent");
-    insertarArtistas(101,"Beabadoobee","Beatrice Kristi Laus","Philippines","DirtyHit");
-    insertarArtistas(505,"J. Cole","Jermaine Cole","USA","DreamvilleRecords");
-    insertarArtistas(808,"Future","Nayvadius DeMun Wilburn","USA","EpicRecords");
 
+    insertarCancion(111,"Show me how",5); //Men I Trust
+    insertarCancion(213, "Halcyon", 4); // Men I Trust
+    insertarCancion(789, "Forever", 3); // Clairo
+    insertarCancion(345, "Glue Song", 3); // Beabadoobee
+    insertarCancion(567, "The London", 4); // J. Cole, Future
+    insertarCancion(910, "Yoru ni Kakeru", 4); // Yoasobi
+    insertarCancion(678, "Pushin P", 2); // Gunna
+    insertarCancion(432, "Numb", 3); // Men I Trust
+    insertarCancion(156, "Sofia", 3); // Clairo
+    insertarCancion(299, "See You Soon", 3); // Beabadoobee
+    insertarCancion(701, "Wet Dreamz", 4); // J. Cole
+
+
+    insertarAlbum(243,"Charm",2024);
+    insertarAlbum(382, "THE BOOK 2", 2023); // Yoasobi
+    insertarAlbum(715, "Immunity", 2019); // Clairo
+    insertarAlbum(926, "DS4EVER", 2022); // Gunna
+    insertarAlbum(564, "Forever Live Sessions", 2021); // Men I Trust
+    insertarAlbum(837, "Beatopia", 2022); // Beabadoobee
+    insertarAlbum(490, "2014 Forest Hills Drive", 2014); // J. Cole
+    insertarAlbum(311, "High Off Life", 2020); // Future
+    insertarAlbum(112, "The Book", 2021); // Yoasobi
+    insertarAlbum(456, "Sling", 2021); // Clairo
+    insertarAlbum(789, "Wunna", 2020); // Gunna
+    insertarAlbum(234, "Oncle Jazz", 2019); // Men I Trust
+    insertarAlbum(678, "Fake It Flowers", 2020); // Beabadoobee
+    insertarAlbum(901, "KOD", 2018); // J. Cole
+    insertarAlbum(345, "I Never Liked You", 2022); // Future
+
+    insertarArtistas(456,"Yoasobi","Lilas","Japan");
+    insertarArtistas(123,"Clairo","Claire","USA");
+    insertarArtistas(789,"Gunna","Sergio","USA");
+    insertarArtistas(303,"Men I Trust","Men I Trust","Canada");
+    insertarArtistas(101,"Beabadoobee","Beatrice Kristi Laus","Philippines");
+    insertarArtistas(505,"J. Cole","Jermaine Cole","USA");
+    insertarArtistas(808,"Future","Nayvadius DeMun Wilburn","USA");
+
+
+    insertarGeneroMusical(111,"Rap","You know what rap is");
+    insertarGeneroMusical(222,"Indie","Idk if this is a real genre");
+    insertarGeneroMusical(333,"Pop","Like taylor swift or something");
+    insertarGeneroMusical(444,"Country","The one nobody likes");
+
+    insertarPlaylist(231,"Best hits","Random Dude",2025);
+    insertarPlaylist(324,"Running or idk","Runner",2077);
+    insertarPlaylist(431,"Sleeping","Lazy guy",2024);
+
+    insertarSellosDiscograficos(789, "Sony Music Japan", "Japan", 1968); // Yoasobi
+    insertarSellosDiscograficos(456, "FADER Label", "USA", 2002); // Clairo
+    insertarSellosDiscograficos(234, "YSL Records", "USA", 2016); // Gunna
+    insertarSellosDiscograficos(567, "Independent", "Canada", 2015); // Men I Trust
+    insertarSellosDiscograficos(901, "Dirty Hit", "UK", 2010); // Beabadoobee
+    insertarSellosDiscograficos(678, "Dreamville Records", "USA", 2007); // J. Cole
+    insertarSellosDiscograficos(345, "Epic Records", "USA", 1953); // Future
+
+    imprimirCanciones();
+    imprimirAlbumes();
     imprimirArtistas();
+    imprimirPlaylists();
+    imprimirGenerosMusicales();
+    imprimirSellosDiscograficos();
+    
 
     return 0;
 }
