@@ -178,6 +178,8 @@ struct Sellos_Discograficos {
 } *primeroSD = nullptr;
 
 
+//Insercion y actualizacion
+
 //Funciones de Cancion
 void insertarCancion(int id,string titulo,int duracion,int id_album,int id_artista){
     Canciones * nc = new Canciones (id, titulo, duracion, id_album, id_artista);
@@ -656,21 +658,6 @@ void eliminarAlbumArtista(string tituloArt, string tituloAlb){
 
 
 
-void imprimirArtistas(){
-
-    Artistas * temp = primeroArt;
-
-    while (temp != nullptr){
-        cout << "---------------------------------" << endl;
-        cout << "Nombre Artistico: " << temp -> Nombre_Artistico << endl;
-        cout << "Nombre Real: " << temp -> Nombre_Real << endl;
-        cout << "Pais: " << temp -> Pais << endl;
-        cout << "Sello Discografico: " <<temp -> Sello_Discografico << endl;
-
-        temp = temp -> sig;
-    }
-
-}
 
 //Funciones de Genero Musical
 void insertarGeneroMusical (int id, string nombre, string descripcion){
@@ -1126,6 +1113,146 @@ void eliminarArtistaSelloDiscografico(string nombre, string nombreArt){
         }
     }
 }
+
+//Consultas
+
+
+
+//Reportes
+
+void imprimirCancion(Canciones * temp){
+    cout << "---------------------------------" << endl;
+    cout << "ID de Cancion: " << temp->ID << endl;
+    cout << "Titulo de Cancion: " << temp->Titulo << endl;
+    cout << "Duracion: " << temp->Duracion << endl;
+    cout << "ID de Album: " << temp->ID_Album << endl;
+    cout << "ID de Artista: " << temp->ID_Artista << endl;
+}
+
+void imprimirCanciones(){
+    Canciones * temp = primeroC;
+    while(temp != nullptr){
+        imprimirCancion(temp);
+        temp = temp -> sig;
+    }
+}
+
+void imprimirAlbum(Albumes * temp, bool printDetails){
+    cout << "---------------------------------" << endl;
+    cout << "ID de Album: " << temp->ID << endl;
+    cout << "Titulo: " << temp->Titulo << endl;
+    cout << "Año: " << temp->Anno << endl;
+    cout << "Número de Canciones: " << temp->N_canciones << endl;
+    cout << "---------------------------------" << endl;
+    cout << "Canciones del Album: " << endl;
+    if (printDetails){
+        Sublista_Canciones * temp2 = temp->canciones;
+        while(temp2 != nullptr){
+            imprimirCancion(temp2->cancion);
+            temp2 = temp2 -> sig;
+        }
+    }
+    
+}
+
+void imprimirAlbumes(){
+    Albumes * temp = primeroAlb;
+    while (temp != nullptr){
+        imprimirAlbum(temp,true);
+        temp = temp->sig;
+    }
+}
+
+
+void imprimirArtista(Artistas * temp, bool printDetails){
+    cout << "---------------------------------" << endl;
+    cout << "Nombre Artistico: " << temp -> Nombre_Artistico << endl;
+    cout << "Nombre Real: " << temp -> Nombre_Real << endl;
+    cout << "Pais: " << temp -> Pais << endl;
+    cout << "Sello Discografico: " <<temp -> Sello_Discografico << endl;
+    cout << "---------------------------------" << endl;
+    cout << "Canciones del Artista: " << endl;
+    if (!printDetails){
+        return;
+    }
+    Sublista_Canciones * temp2 = temp->canciones;
+    while(temp2 != nullptr){
+        imprimirCancion(temp2->cancion);
+        temp2 = temp2 -> sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Albumes del Artista: " << endl;
+    Sublista_Albumes * temp3 = temp->albumes;
+    while(temp3 != nullptr){
+        imprimirAlbum(temp3->album,false);
+        temp3 = temp3 -> sig;
+    }
+}
+
+void imprimirArtistas(){
+    Artistas * temp = primeroArt;
+    while (temp != nullptr){
+        imprimirArtista(temp,true);
+        temp = temp -> sig;
+    }
+}
+
+void imprimirGenerosMusicales(){
+    Generos_Musicales * temp = primeroG;
+    do{
+        cout << "---------------------------------" << endl;
+        cout << "ID de Genero Musical: " << temp->ID << endl;
+        cout << "Nombre de Genero Musical: " << temp->Nombre << endl;
+        cout << "Descripcion de Genero Musical: " << temp->Descripcion << endl;
+        cout << "---------------------------------" << endl;
+        cout << "Canciones del Genero Musical: " << endl;
+        Sublista_Canciones * temp2 = temp->canciones;
+        while(temp2 != nullptr){
+            imprimirCancion(temp2->cancion);
+            temp2 = temp2 -> sig;
+        }
+        temp = temp->sig;
+    }
+    while(temp != primeroG);
+}
+
+void imprimirPlaylists(){
+    Playlist * temp = primeroP;
+    while (temp != nullptr){
+        cout << "---------------------------------" << endl;
+        cout << "ID de Playlist: " << temp -> ID << endl;
+        cout << "Nombre de Playlist: " << temp -> Nombre << endl;
+        cout << "Creador de Playlist: " << temp -> Creador << endl;
+        cout << "Fecha de Playlist: " << temp->Fecha << endl;
+        cout << "---------------------------------" << endl;
+        cout << "Canciones de la Playlist: " << endl;
+        Sublista_Canciones * temp2 = temp->canciones;
+        while(temp2 != nullptr){
+            imprimirCancion(temp2->cancion);
+            temp2 = temp2 -> sig;
+        }
+        temp = temp->sig;
+    }
+}
+
+void imprimirSellosDiscograficos(){
+    Sellos_Discograficos * temp = primeroSD;
+    do{
+        cout << "---------------------------------" << endl;
+        cout << "ID de Sello Discografico: " << temp -> ID << endl;
+        cout << "Nombre de Sello Discografico: " << temp->Nombre << endl;
+        cout << "Pais de Sello Discografico: " << temp->Pais << endl;
+        cout << "Año de Fundacion de Sello Discografico: " << temp->Anno_fundacion << endl;
+        cout << "---------------------------------" << endl;
+        Sublista_Artistas * temp2 = temp->artistas;
+        while (temp2 != nullptr){
+            imprimirArtista(temp2->artista,false);
+            temp2 = temp2 -> sig;
+        }
+    }
+    while (temp != primeroSD);
+}
+
 
 
 int main (){
