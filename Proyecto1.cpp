@@ -182,6 +182,10 @@ struct Sellos_Discograficos {
 
     Sublista_Artistas * artistas;
 
+    //atributos agregador para consultas
+    int numero_artistas;
+
+
     Sellos_Discograficos(int _ID, string _Nombre, string _Pais, int _Anno_fundacion) {
         ID = _ID;
         Nombre = _Nombre;
@@ -189,6 +193,8 @@ struct Sellos_Discograficos {
         Anno_fundacion = _Anno_fundacion;
         sig = ant = nullptr;
         artistas = nullptr;
+
+        numero_artistas = 0;
     }
 } *primeroSD = nullptr;
 
@@ -376,7 +382,7 @@ void eliminarAlbum(string titulo){
 
 //Modificacion de sublistas
 
-//Considerar cambiar esto a que cuando se inserte sea por la duracion de la cancion de alto a menos para ahorrarnos trabajo a la hora de imprimir (Ver requisitos de reportes)
+
 void insertarCancionAlbum(string tituloAlb, string tituloC){
     Albumes * album = buscarAlbum(tituloAlb);
     Canciones * cancion = buscarCancion(tituloC);
@@ -384,16 +390,26 @@ void insertarCancionAlbum(string tituloAlb, string tituloC){
         cout << "Album o cancion no encontrada " << endl;
     } 
     else{
+        //Se ordena de mas duracion a menos duracion
         Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
         if (album -> canciones == nullptr){
             album -> canciones = nSub;
         }
         else{
             Sublista_Canciones * temp = album -> canciones;
-            while (temp -> sig != nullptr){
+            //La nueva cancion tiene mas duracion que la primera cancion
+            if (temp -> cancion -> Duracion < cancion -> Duracion){
+                nSub -> sig = temp;
+                album -> canciones = nSub;
+            }
+            //Si la nueva cancion es mas grande que la siguiente cancion evaluada se pone antes que esta
+            while (temp -> sig != nullptr && temp -> sig -> cancion -> Duracion > cancion -> Duracion){
                 temp = temp -> sig;
             }
+            //Tambien se pone de siguiente si llegamos al final de la lista
+            nSub -> sig = temp -> sig;
             temp -> sig = nSub;
+            
         }  
     }
 }
@@ -1086,6 +1102,7 @@ void insertarArtistaSelloDiscografico(string nombre, string nombreArt){
         cout << "Sello Discografico o artista no encontrado " << endl;
     }
     else{
+        sd -> numero_artistas ++;
         Sublista_Artistas * nSub = new Sublista_Artistas (artista);
         if (sd -> artistas == nullptr){
             sd -> artistas = nSub;
@@ -1131,88 +1148,6 @@ void eliminarArtistaSelloDiscografico(string nombre, string nombreArt){
         }
     }
 }
-
-//Consultas
-
-void generoPopular(){
-    Generos_Musicales * temp = primeroG;
-    Generos_Musicales * max = temp;
-    do{
-        if (temp -> numero_canciones > max -> numero_canciones){
-            max = temp;
-        }
-        temp = temp->sig;
-    }
-    while(temp != primeroG);
-    cout << "---------------------------------" << endl;
-    cout << "Genero Musical con más canciones registradas: " << max ->Nombre << endl;
-}
-
-void artistaTrabajador(){
-    Artistas * temp = primeroArt;
-    Artistas * max = temp;
-    while(temp != nullptr){
-        if (temp->albumes_publicados > max -> albumes_publicados){
-            max = temp;
-        }
-        temp = temp->sig;
-    }
-    cout << "---------------------------------" << endl;
-    cout << "Artista con más albumes publicados: " << max -> Nombre_Artistico << endl;
-
-}
-
-void cancionLarga(){
-    Canciones * temp = primeroC;
-    Canciones * max = temp;
-    while (temp != nullptr){
-        if (temp -> Duracion > max -> Duracion){
-            max = temp;
-        }
-        temp = temp -> sig;
-    }
-    cout << "---------------------------------" << endl;
-    cout << "Canción más larga: " << max -> Titulo << endl;
-
-}
-
-void playlistLarga(){
-    Playlist * temp = primeroP;
-    Playlist * max = temp;
-    while (temp != nullptr){
-        if (temp -> numero_canciones > max -> numero_canciones){
-            max = temp;
-        }
-        temp = temp -> sig;
-    }
-    cout << "---------------------------------" << endl;
-    cout << "Playlist más larga: " << max -> Nombre << endl;
-}
-
-void albumesPorArtista(){
-    Artistas * temp = primeroArt;
-    cout << "---------------------------------" << endl;
-    cout << "Albumes por Artista: " << endl;
-    cout << "---------------------------------" << endl;
-    while (temp != nullptr){
-        cout << "Albumes publicados por " << temp->Nombre_Artistico << ": " << temp->albumes_publicados << endl;
-        temp = temp->sig; 
-    }
-}
-
-void selloDiscograficoPopular(){
-
-}
-
-void cancionesEnAnnoDetermindado (int a){
-
-}
-
-void albumesSuperiorNumero(int n){
-    
-}
-
-
 
 //Reportes
 
@@ -1348,6 +1283,115 @@ void imprimirSellosDiscograficos(){
     }
     while (temp != primeroSD);
 }
+
+//Consultas
+
+void generoPopular(){
+    Generos_Musicales * temp = primeroG;
+    Generos_Musicales * max = temp;
+    do{
+        if (temp -> numero_canciones > max -> numero_canciones){
+            max = temp;
+        }
+        temp = temp->sig;
+    }
+    while(temp != primeroG);
+    cout << "---------------------------------" << endl;
+    cout << "Genero Musical con más canciones registradas: " << max ->Nombre << endl;
+}
+
+void artistaTrabajador(){
+    Artistas * temp = primeroArt;
+    Artistas * max = temp;
+    while(temp != nullptr){
+        if (temp->albumes_publicados > max -> albumes_publicados){
+            max = temp;
+        }
+        temp = temp->sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Artista con más albumes publicados: " << max -> Nombre_Artistico << endl;
+
+}
+
+void cancionLarga(){
+    Canciones * temp = primeroC;
+    Canciones * max = temp;
+    while (temp != nullptr){
+        if (temp -> Duracion > max -> Duracion){
+            max = temp;
+        }
+        temp = temp -> sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Canción más larga: " << max -> Titulo << endl;
+
+}
+
+void playlistLarga(){
+    Playlist * temp = primeroP;
+    Playlist * max = temp;
+    while (temp != nullptr){
+        if (temp -> numero_canciones > max -> numero_canciones){
+            max = temp;
+        }
+        temp = temp -> sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Playlist más larga: " << max -> Nombre << endl;
+}
+
+void albumesPorArtista(){
+    Artistas * temp = primeroArt;
+    cout << "---------------------------------" << endl;
+    cout << "Albumes por Artista: " << endl;
+    cout << "---------------------------------" << endl;
+    while (temp != nullptr){
+        cout << "Albumes publicados por " << temp->Nombre_Artistico << ": " << temp->albumes_publicados << endl;
+        temp = temp->sig; 
+    }
+}
+
+void selloDiscograficoPopular(){
+    Sellos_Discograficos * temp = primeroSD;
+    Sellos_Discograficos * max = temp;
+    do{
+        if (temp->numero_artistas > max -> numero_artistas){
+            max = temp;
+        }
+        temp = temp -> sig;
+    }
+    while(temp != primeroSD);
+    cout << "---------------------------------" << endl;
+    cout << "Sello Discografico con más artistas publicados: " << max -> Nombre << endl;
+}
+
+void cancionesEnAnnoDetermindado (int a){
+    Albumes * temp = primeroAlb;
+    cout << "Albumes publicados en  " << a <<": "<< endl;
+    while(temp != nullptr){
+        if (temp -> Anno = a){
+            imprimirAlbum(temp,true);
+        }
+        temp = temp -> sig;
+    }
+}
+
+void albumesSuperiorNumero(int n){
+    Albumes * temp = primeroAlb;
+    cout << "---------------------------------" << endl;
+    cout << "Albumes que superan " << n << " número de canciones: " << endl;
+    while(temp != nullptr){
+        if (temp -> N_canciones > n){
+            cout << temp->Titulo << "con " << temp->N_canciones << " canciones" << endl;
+        }
+        temp = temp -> sig;
+    }
+}
+
+
+
+
 
 
 
