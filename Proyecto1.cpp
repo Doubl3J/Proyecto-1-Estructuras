@@ -83,6 +83,9 @@ struct Artistas {
     Sublista_Albumes * albumes;
     Sublista_Canciones * canciones;
 
+    //atributos agregador para consultas
+    int albumes_publicados;
+
     Artistas(int id,string nombre_artistico, string nombre_real, string pais, string sello_discografico){
         ID = id;
         Nombre_Artistico = nombre_artistico;
@@ -95,6 +98,8 @@ struct Artistas {
 
         albumes = nullptr;
         canciones = nullptr;
+
+        albumes_publicados = 0;
     }
 
 }*primeroArt;
@@ -120,6 +125,9 @@ struct Generos_Musicales {
 
     Sublista_Canciones * canciones;
 
+    //atributos agregador para consultas
+    int numero_canciones;
+
     Generos_Musicales(int id, string nombre, string descripcion){
         ID = id;
         Nombre = nombre;
@@ -127,6 +135,8 @@ struct Generos_Musicales {
 
         sig = nullptr;
         canciones = nullptr;
+
+        numero_canciones = 0;
     }
 
 }*primeroG;
@@ -142,6 +152,9 @@ struct Playlist {
 
     Sublista_Canciones * canciones;
 
+    //atributos agregador para consultas
+    int numero_canciones;
+
     Playlist(int id, string nombre, string creador,string fecha){
         ID = id;
         Nombre = nombre;
@@ -150,6 +163,8 @@ struct Playlist {
 
         sig = nullptr;
         canciones = nullptr;
+
+        numero_canciones = 0;
     }
 
 }*primeroP;
@@ -609,6 +624,7 @@ void insertarAlbumArtista(string nombreArt, string tituloAlb){
         cout << "Artista o album no encontrado " << endl;
     }
     else{
+        artista ->albumes_publicados++;
         Sublista_Albumes * nSub = new Sublista_Albumes(album);
         if (artista -> albumes == nullptr){
             artista -> albumes = nSub;
@@ -779,6 +795,7 @@ void insertarCancionGeneroMusical(string nombre, string tituloC){
         cout << "Genero musical o cancion no encontrada " << endl;
     }
     else{
+        gm -> numero_canciones ++;
         Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
         if (gm -> canciones == nullptr){
             gm -> canciones = nSub;
@@ -912,6 +929,7 @@ void insertarCancionPlaylist(string nombre, string tituloC){
         cout << "Playlist o cancion no encontrada " << endl;
     }
     else{
+        playlist -> numero_canciones ++;
         Sublista_Canciones * nSub = new Sublista_Canciones(cancion);
         if (playlist -> canciones == nullptr){
             playlist -> canciones = nSub;
@@ -1115,6 +1133,84 @@ void eliminarArtistaSelloDiscografico(string nombre, string nombreArt){
 }
 
 //Consultas
+
+void generoPopular(){
+    Generos_Musicales * temp = primeroG;
+    Generos_Musicales * max = temp;
+    do{
+        if (temp -> numero_canciones > max -> numero_canciones){
+            max = temp;
+        }
+        temp = temp->sig;
+    }
+    while(temp != primeroG);
+    cout << "---------------------------------" << endl;
+    cout << "Genero Musical con más canciones registradas: " << max ->Nombre << endl;
+}
+
+void artistaTrabajador(){
+    Artistas * temp = primeroArt;
+    Artistas * max = temp;
+    while(temp != nullptr){
+        if (temp->albumes_publicados > max -> albumes_publicados){
+            max = temp;
+        }
+        temp = temp->sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Artista con más albumes publicados: " << max -> Nombre_Artistico << endl;
+
+}
+
+void cancionLarga(){
+    Canciones * temp = primeroC;
+    Canciones * max = temp;
+    while (temp != nullptr){
+        if (temp -> Duracion > max -> Duracion){
+            max = temp;
+        }
+        temp = temp -> sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Canción más larga: " << max -> Titulo << endl;
+
+}
+
+void playlistLarga(){
+    Playlist * temp = primeroP;
+    Playlist * max = temp;
+    while (temp != nullptr){
+        if (temp -> numero_canciones > max -> numero_canciones){
+            max = temp;
+        }
+        temp = temp -> sig;
+    }
+    cout << "---------------------------------" << endl;
+    cout << "Playlist más larga: " << max -> Nombre << endl;
+}
+
+void albumesPorArtista(){
+    Artistas * temp = primeroArt;
+    cout << "---------------------------------" << endl;
+    cout << "Albumes por Artista: " << endl;
+    cout << "---------------------------------" << endl;
+    while (temp != nullptr){
+        cout << "Albumes publicados por " << temp->Nombre_Artistico << ": " << temp->albumes_publicados << endl;
+        temp = temp->sig; 
+    }
+}
+
+void selloDiscograficoPopular(){
+
+}
+
+void cancionesEnAnnoDetermindado (int a){
+
+}
+
+void albumesSuperiorNumero(int n){
+    
+}
 
 
 
