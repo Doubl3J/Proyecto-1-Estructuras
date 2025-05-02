@@ -1,6 +1,9 @@
 #include <iostream>
 using namespace std;
 
+//Para validar que el usuario use inputs correctos(integer o string dependiendo de que se pide)
+#include <limits>
+
 //Lista simple Ins al inicio
 struct Canciones {
     int ID;
@@ -1413,8 +1416,117 @@ void albumesSuperiorNumero(int n){
     }
 }
 
+//Validacion
 
+int validInteger(){
+    int num;
 
+    // Si se le pone algo que no sea un integer, se quita el error y se elimina el input previo
+    while (true){
+        cin >> num;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << endl << "Input inválido, por favor escribir un número válido" << endl;
+        }
+        else{return num;}
+    }
+}
+
+//Interfaz
+void mantenimiento(){
+
+}
+
+void consultasAux(){
+    cout << "\n" << "-------------------------------------------------" << endl;
+    cout << "Menu de consultas" << endl;
+    cout << "1 = Género con más canciones registradas" << endl;
+    cout << "2 = Artista con más ablumes publicados " << endl;
+    cout << "3 = Canción más larga de la base de datos" << endl;
+    cout << "4 = Playlist con más canciones" << endl;
+    cout << "5 = Cantidad de álbumes por artista" << endl;
+    cout << "6 = Sello Discográfico con más artistas firmados" << endl;
+    cout << "7 = Canciones publicadas en un año determinado" << endl;
+    cout << "8 = Álbumes que superan un número determinado de canciones" << endl;
+    cout << "9 = Volver al menu principal" << endl;
+    cout << "Presione un número para seleccionar que hacer " << endl;
+    
+}
+
+void consultas(){
+    int n;
+    while (true){
+        consultasAux();
+        n = validInteger();
+        switch (n){
+            case 1:
+                generoPopular();
+                break;
+            case 2:
+                artistaTrabajador();
+                break;
+            case 3:
+                cancionLarga();
+                break;
+            case 4:
+                playlistLarga();
+            case 5:
+                albumesPorArtista();
+            case 6:
+                selloDiscograficoPopular();
+                break;
+            case 7:
+                int x = validInteger();
+                cancionesEnAnnoDetermindado(x);
+                break;
+            case 8:
+                int x = validInteger();
+                albumesSuperiorNumero(x);
+                break;
+            case 9:
+                interfaz();
+                return;
+        }
+    }
+}
+
+void reportes(){
+
+}
+
+void interfazAux(){
+    cout << "\n" << "-------------------------------------------------" << endl;
+    cout << "Bienvenido a Musigest" << endl;
+    cout << "-------------------------------------------------" << endl;
+    cout << "Menu de interacción" << endl;
+    cout << "1 = Mantenimiento" << endl;
+    cout << "2 = Consultas " << endl;
+    cout << "3 = Reportes" << endl;
+    cout << "4 = Salida" << endl;
+    cout << "Presione un número para seleccionar que hacer " << endl;
+}
+
+void interfaz(){
+    int n;
+    while (true){
+        interfazAux();
+        n = validInteger();
+        switch (n){
+            case 1:
+                mantenimiento();
+                break;
+            case 2:
+                consultas();
+                break;
+            case 3:
+                reportes();
+                break;
+            case 4:
+                return;
+        }
+    }
+}
 
 
 
