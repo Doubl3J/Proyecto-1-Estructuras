@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+#include <string>
 //Para validar que el usuario use inputs correctos(integer o string dependiendo de que se pide)
 #include <limits>
 
@@ -745,7 +745,7 @@ void modificarIDGeneroMusical(string nombre, int id){
     }
 }
 
-void modificarIDGeneroMusical(string nombreOG, string nombreNV){
+void modificarnombreGeneroMusical(string nombreOG, string nombreNV){
     Generos_Musicales * genero_musical = buscarGeneroMusical(nombreOG);
     if (genero_musical == nullptr){
         cout << "Genero Musical no encontrado " << endl;
@@ -1416,7 +1416,7 @@ void albumesSuperiorNumero(int n){
     }
 }
 
-//Validacion
+//Validaciones
 
 int validInteger(){
     int num;
@@ -1433,10 +1433,1187 @@ int validInteger(){
     }
 }
 
-//Interfaz
-void mantenimiento(){
+string validString() {
+    string input;
 
+    while (true) {
+        cin >> input;  // Leer solo la siguiente palabra o conjunto de caracteres sin espacios
+
+        bool isValid = true;
+
+        // Verificar si todos los caracteres son letras
+        for (char c : input) {
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))) {
+                isValid = false;
+                break;
+            }
+        }
+
+        if (isValid) {
+            return input;
+        } else {
+            cout << "use un nombre válido" << endl;
+            cin.clear(); // Limpiar el estado de error de cin
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpiar el búfer de entrada
+        }
+    }
 }
+
+bool albumYaExiste(int id, string titulo) {
+    Albumes* temp = primeroAlb;
+    while (temp != nullptr) {
+        if ((id != 0 && temp->ID == id) || (!titulo.empty() && temp->Titulo == titulo)) {
+            if (id != 0 && temp->ID == id) {
+                cout << "Error: El ID " << id << " ya está en uso por el álbum '" << temp->Titulo << "'\n";
+            }
+            if (!titulo.empty() && temp->Titulo == titulo) {
+                cout << "Error: El título '" << titulo << "' ya está en uso por el álbum con ID " << temp->ID << "\n";
+            }
+            return true;
+        }
+        temp = temp->sig;
+    }
+    return false;
+}
+bool artistaYaExiste(int id, string nombre_artistico) {
+    Artistas* temp = primeroArt;
+    while (temp != nullptr) {
+        if ((id != 0 && temp->ID == id) || (!nombre_artistico.empty() && temp->Nombre_Artistico == nombre_artistico)) {
+            if (id != 0 && temp->ID == id) {
+                cout << "Error: El ID " << id << " ya está en uso por el artista '" << temp->Nombre_Artistico << "'\n";
+            }
+            if (!nombre_artistico.empty() && temp->Nombre_Artistico == nombre_artistico) {
+                cout << "Error: El nombre artístico '" << nombre_artistico << "' ya está en uso\n";
+            }
+            return true;
+        }
+        temp = temp->sig;
+    }
+    return false;
+}
+bool selloYaExiste(int id, string nombre) {
+    if (primeroSD == nullptr) return false;
+    
+    Sellos_Discograficos* temp = primeroSD;
+    do {
+        if ((id != 0 && temp->ID == id) || (!nombre.empty() && temp->Nombre == nombre)) {
+            if (id != 0 && temp->ID == id) {
+                cout << "Error: El ID " << id << " ya está en uso por el sello '" << temp->Nombre << "'\n";
+            }
+            if (!nombre.empty() && temp->Nombre == nombre) {
+                cout << "Error: El nombre '" << nombre << "' ya está en uso por el sello con ID " << temp->ID << "\n";
+            }
+            return true;
+        }
+        temp = temp->sig;
+    } while (temp != primeroSD);
+    
+    return false;
+}
+// Verificar existencia de canción
+bool cancionYaExiste(int id, string titulo) {
+    Canciones* temp = primeroC;
+    while (temp != nullptr) {
+        if (temp->ID == id || temp->Titulo == titulo) {
+            return true;  // Si encuentra una canción con el mismo ID o título, retorna true
+        }
+        temp = temp->sig;
+    }
+    return false;  // Si no encuentra ninguna coincidencia, retorna false
+}
+bool generoYaExiste(int id, std::string nombre) {
+    if (primeroG == nullptr) return false;
+    
+    Generos_Musicales* temp = primeroG;
+    do {
+        if ((id != 0 && temp->ID == id) || (!nombre.empty() && temp->Nombre == nombre)) {
+            std::cout << "\n¡Ya existe un género ";
+            if (id != 0 && temp->ID == id) {
+                cout << "con el ID " << id;
+            }
+            if (!nombre.empty() && temp->Nombre == nombre) {
+                if (id != 0) std::cout << " y ";
+                std::cout << "con el nombre '" << nombre << "'";
+            }
+            std::cout << "! Por favor, usa otro.\n";
+            return true;
+        }
+        temp = temp->sig;
+    } while (temp != primeroG);
+    
+    return false;
+}
+
+// Función de validación mejorada
+bool playlistYaExiste(int id, string nombre) {
+    Playlist* temp = primeroP;
+    while (temp != nullptr) {
+        if ((id != 0 && temp->ID == id) || (!nombre.empty() && temp->Nombre == nombre)) {
+            if (id != 0 && temp->ID == id) {
+                cout << "Error: El ID " << id << " ya está en uso por la playlist '" << temp->Nombre << "'\n";
+            }
+            if (!nombre.empty() && temp->Nombre == nombre) {
+                cout << "Error: El nombre '" << nombre << "' ya está en uso por la playlist con ID " << temp->ID << "\n";
+            }
+            return true;
+        }
+        temp = temp->sig;
+    }
+    return false;
+}
+
+
+void subMenuCancion() {
+    int opcion;
+    do {
+        cout << "\n--- SUBMENÚ CANCIONES ---\n";
+        cout << "1. Insertar canción\n";
+        cout << "2. Modificar ID de canción\n";
+        cout << "3. Modificar título de canción\n";
+        cout << "4. Modificar duración de canción\n";
+        cout << "5. Modificar ID de álbum de canción\n";
+        cout << "6. Modificar ID de artista de canción\n";
+        cout << "7. Eliminar canción\n";
+        cout << "8. Mostrar canciones\n"; 
+        cout << "9. Volver al menú anterior\n";
+        cout << "Seleccione una opción: ";
+        opcion = validInteger();
+
+        switch (opcion) {
+            case 1:{
+                // Insertar canción (validación de duplicados)
+                int id;
+                string titulo;
+                int duracion;
+                cout << "Ingrese ID: ";
+                id = validInteger();
+
+                // Validar si el ID ya existe
+                if (cancionYaExiste(id, "")) {
+                    cout << "Canción no insertada, ID ya existe.\n";
+                    break;
+                }
+
+                cout << "Ingrese título: ";
+                cin >> titulo;
+
+                // Validar si el título ya existe
+                if (cancionYaExiste(0, titulo)) {
+                    cout << "Canción no insertada, título ya existe.\n";
+                    break;
+                }
+
+                cout << "Ingrese duración: ";
+                duracion = validInteger();
+                insertarCancion(id, titulo, duracion);
+                break;
+            }
+            case 2:{
+                // Modificar ID de canción (validación de duplicados)
+                string tituloModID;
+                int idNuevo;
+                cout << "Ingrese título de la canción a modificar: ";
+                cin >> tituloModID;
+
+                cout << "Ingrese el nuevo ID: ";
+                idNuevo = validInteger();
+
+                // Validar si el nuevo ID ya está en uso
+                if (cancionYaExiste(idNuevo, "")) {
+                    cout << "ID ya está siendo usado por otra canción.\n";
+                    break;
+                }
+
+                modificarIDCancion(tituloModID, idNuevo);
+                break;
+            }
+            case 3:{
+                // Modificar título de canción (validación de duplicados)
+                string tituloModOriginal, tituloModNuevo;
+                cout << "Ingrese título original de la canción: ";
+                cin >> tituloModOriginal;
+
+                cout << "Ingrese el nuevo título: ";
+                cin >> tituloModNuevo;
+
+                // Validar si el nuevo título ya está en uso
+                if (cancionYaExiste(0, tituloModNuevo)) {
+                    cout << "Título ya está siendo usado por otra canción.\n";
+                    break;
+                }
+
+                modificarTituloCancion(tituloModOriginal, tituloModNuevo);
+                break;
+            }
+            case 4:{
+                // Modificar duración de canción (sin validación de existencia)
+                string tituloModDuracion;
+                int duracionNueva;
+                cout << "Ingrese título de la canción a modificar: ";
+                cin >> tituloModDuracion;
+                cout << "Ingrese la nueva duración: ";
+                duracionNueva = validInteger();
+                modificarDuracionCancion(tituloModDuracion, duracionNueva);
+                break;
+            }
+            case 5:{
+                // Modificar ID de álbum de canción (sin validación de existencia)
+                string tituloModIDAlbum;
+                int idAlbumNuevo;
+                cout << "Ingrese título de la canción a modificar: ";
+                cin >> tituloModIDAlbum;
+                cout << "Ingrese el nuevo ID de álbum: ";
+                idAlbumNuevo = validInteger();
+                modificarIDAlbumCancion(tituloModIDAlbum, idAlbumNuevo);
+                break;
+            }
+            case 6:{
+                // Modificar ID de artista de canción (sin validación de existencia)
+                string tituloModIDArtista;
+                int idArtistaNuevo;
+                cout << "Ingrese título de la canción a modificar: ";
+                cin >> tituloModIDArtista;
+                cout << "Ingrese el nuevo ID de artista: ";
+                idArtistaNuevo = validInteger();
+                modificarIDArtistaCancion(tituloModIDArtista, idArtistaNuevo);
+                break;
+            }
+            case 7:{
+                // Eliminar canción (sin validación de existencia)
+                string tituloEliminar;
+                cout << "Ingrese título de la canción a eliminar: ";
+                cin >> tituloEliminar;
+                eliminarCancion(tituloEliminar);
+                break;
+            }
+            case 9:
+                cout << "Volviendo...\n";
+                break;
+
+            default:
+                cout << "Opción inválida.\n";
+                break;
+        }
+    } while (opcion != 8);
+}
+
+
+void subMenuArtista() {
+    int opcion;
+    do {
+        cout << "\n--- SUBMENÚ ARTISTAS ---\n";
+        cout << "1. Insertar artista\n";
+        cout << "2. Modificar ID de artista\n";
+        cout << "3. Modificar nombre artístico\n";
+        cout << "4. Modificar nombre real\n";
+        cout << "5. Modificar país\n";
+        cout << "6. Modificar sello discográfico\n";
+        cout << "7. Eliminar artista\n";
+        cout << "8. Mostrar artistas\n";
+        cout << "9. Añadir canción a artista\n";
+        cout << "10. Eliminar canción de artista\n";
+        cout << "11. Añadir álbum a artista\n";
+        cout << "12. Eliminar álbum de artista\n";
+        cout << "13. Volver al menú anterior\n";
+        cout << "Seleccione una opción: ";
+        opcion = validInteger();
+
+        switch (opcion) {
+            case 1: {
+                // Insertar artista con validación
+                int id;
+                string nombre_artistico, nombre_real, pais;
+                
+                cout << "Ingrese ID del artista: ";
+                id = validInteger();
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombre_artistico);
+                
+                if (artistaYaExiste(id, nombre_artistico)) {
+                    break;
+                }
+                
+                cout << "Ingrese nombre real: ";
+                getline(cin, nombre_real);
+                
+                cout << "Ingrese país de origen: ";
+                getline(cin, pais);
+                
+                insertarArtistas(id, nombre_artistico, nombre_real, pais);
+                cout << "Artista creado exitosamente!\n";
+                break;
+            }
+
+            case 2: {
+                // Modificar ID con validación
+                string nombre;
+                int nuevoID;
+                
+                cout << "Ingrese nombre artístico del artista a modificar: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo ID: ";
+                nuevoID = validInteger();
+                
+                if (artistaYaExiste(nuevoID, "")) {
+                    break;
+                }
+                
+                modificarIDArtista(nombre, nuevoID);
+                break;
+            }
+
+            case 3: {
+                // Modificar nombre artístico con validación
+                string nombreActual, nuevoNombre;
+                
+                cout << "Ingrese nombre artístico actual: ";
+                cin.ignore();
+                getline(cin, nombreActual);
+                
+                cout << "Ingrese nuevo nombre artístico: ";
+                getline(cin, nuevoNombre);
+                
+                if (artistaYaExiste(0, nuevoNombre)) {
+                    break;
+                }
+                
+                modificarNArtisticoArtista(nombreActual, nuevoNombre);
+                break;
+            }
+
+            case 4: {
+                // Modificar nombre real
+                string nombre, nuevoNombreReal;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo nombre real: ";
+                getline(cin, nuevoNombreReal);
+                
+                modificarNRealArtista(nombre, nuevoNombreReal);
+                break;
+            }
+
+            case 5: {
+                // Modificar país
+                string nombre, nuevoPais;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo país: ";
+                getline(cin, nuevoPais);
+                
+                modificarPaisArtista(nombre, nuevoPais);
+                break;
+            }
+
+            case 6: {
+                // Modificar sello discográfico
+                string nombre, nuevoSello;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo sello discográfico: ";
+                getline(cin, nuevoSello);
+                
+                modificarSDiscograficoArtista(nombre, nuevoSello);
+                break;
+            }
+
+            case 7: {
+                // Eliminar artista
+                string nombre;
+                
+                cout << "Ingrese nombre artístico del artista a eliminar: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                eliminarArtista(nombre);
+                break;
+            }
+
+            case 8:
+                imprimirArtistas();
+                break;
+
+            case 9: {
+                // Añadir canción a artista
+                string nombreArtista, tituloCancion;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombreArtista);
+                
+                cout << "Ingrese título de la canción: ";
+                getline(cin, tituloCancion);
+                
+                insertarCancionArtista(nombreArtista, tituloCancion);
+                break;
+            }
+
+            case 10: {
+                // Eliminar canción de artista
+                string nombreArtista, tituloCancion;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombreArtista);
+                
+                cout << "Ingrese título de la canción a eliminar: ";
+                getline(cin, tituloCancion);
+                
+                eliminarCancionArtista(nombreArtista, tituloCancion);
+                break;
+            }
+
+            case 11: {
+                // Añadir álbum a artista
+                string nombreArtista, tituloAlbum;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombreArtista);
+                
+                cout << "Ingrese título del álbum: ";
+                getline(cin, tituloAlbum);
+                
+                insertarAlbumArtista(nombreArtista, tituloAlbum);
+                break;
+            }
+
+            case 12: {
+                // Eliminar álbum de artista
+                string nombreArtista, tituloAlbum;
+                
+                cout << "Ingrese nombre artístico: ";
+                cin.ignore();
+                getline(cin, nombreArtista);
+                
+                cout << "Ingrese título del álbum a eliminar: ";
+                getline(cin, tituloAlbum);
+                
+                eliminarAlbumArtista(nombreArtista, tituloAlbum);
+                break;
+            }
+
+            case 13:
+                cout << "Volviendo al menú principal...\n";
+                break;
+
+            default:
+                cout << "Opción inválida.\n";
+        }
+    } while (opcion != 13);
+}
+
+void subMenuAlbum() {
+    int opcion;
+    do {
+        cout << "\n--- SUBMENÚ ÁLBUMES ---\n";
+        cout << "1. Insertar álbum\n";
+        cout << "2. Modificar ID de álbum\n";
+        cout << "3. Modificar título de álbum\n";
+        cout << "4. Modificar año de álbum\n";
+        cout << "5. Modificar número de canciones\n";
+        cout << "6. Eliminar álbum\n";
+        cout << "7. Mostrar álbumes\n";
+        cout << "8. Añadir canción a álbum\n";
+        cout << "9. Eliminar canción de álbum\n";
+        cout << "10. Volver al menú anterior\n";
+        cout << "Seleccione una opción: ";
+        opcion = validInteger();
+
+        switch (opcion) {
+            case 1: {
+                // Insertar álbum con validación
+                int id, anno;
+                string titulo;
+                
+                cout << "Ingrese ID del álbum: ";
+                id = validInteger();
+                
+                cout << "Ingrese título del álbum: ";
+                cin.ignore();
+                getline(cin, titulo);
+                
+                if (albumYaExiste(id, titulo)) {
+                    break;
+                }
+                
+                cout << "Ingrese año del álbum (1951-2024): ";
+                anno = validInteger();
+                while (anno < 1951 || anno > 2024) {
+                    cout << "Año inválido. Ingrese entre 1951-2024: ";
+                    anno = validInteger();
+                }
+                
+                insertarAlbum(id, titulo, anno);
+                cout << "Álbum creado exitosamente!\n";
+                break;
+            }
+
+            case 2: {
+                // Modificar ID con validación
+                string titulo;
+                int nuevoID;
+                
+                cout << "Ingrese título del álbum a modificar: ";
+                cin.ignore();
+                getline(cin, titulo);
+                
+                cout << "Ingrese nuevo ID: ";
+                nuevoID = validInteger();
+                
+                if (albumYaExiste(nuevoID, "")) {
+                    break;
+                }
+                
+                modificarIDAlbum(titulo, nuevoID);
+                break;
+            }
+
+            case 3: {
+                // Modificar título con validación
+                string tituloActual, nuevoTitulo;
+                
+                cout << "Ingrese título actual del álbum: ";
+                cin.ignore();
+                getline(cin, tituloActual);
+                
+                cout << "Ingrese nuevo título: ";
+                getline(cin, nuevoTitulo);
+                
+                if (albumYaExiste(0, nuevoTitulo)) {
+                    break;
+                }
+                
+                modificarTituloAlbum(tituloActual, nuevoTitulo);
+                break;
+            }
+
+            case 4: {
+                // Modificar año
+                string titulo;
+                int nuevoAnno;
+                
+                cout << "Ingrese título del álbum: ";
+                cin.ignore();
+                getline(cin, titulo);
+                
+                cout << "Ingrese nuevo año (1951-2024): ";
+                nuevoAnno = validInteger();
+                while (nuevoAnno < 1951 || nuevoAnno > 2024) {
+                    cout << "Año inválido. Ingrese entre 1951-2024: ";
+                    nuevoAnno = validInteger();
+                }
+                
+                modificarAnnoAlbum(titulo, nuevoAnno);
+                break;
+            }
+
+            case 5: {
+                // Modificar número de canciones
+                string titulo;
+                int nuevoNumero;
+                
+                cout << "Ingrese título del álbum: ";
+                cin.ignore();
+                getline(cin, titulo);
+                
+                cout << "Ingrese nuevo número de canciones: ";
+                nuevoNumero = validInteger();
+                
+                modificarNCancionesAlbum(titulo, nuevoNumero);
+                break;
+            }
+
+            case 6: {
+                // Eliminar álbum
+                string titulo;
+                
+                cout << "Ingrese título del álbum a eliminar: ";
+                cin.ignore();
+                getline(cin, titulo);
+                
+                eliminarAlbum(titulo);
+                break;
+            }
+
+            case 7:
+                imprimirAlbumes();
+                break;
+
+            case 8: {
+                // Añadir canción a álbum
+                string tituloAlbum, tituloCancion;
+                
+                cout << "Ingrese título del álbum: ";
+                cin.ignore();
+                getline(cin, tituloAlbum);
+                
+                cout << "Ingrese título de la canción: ";
+                getline(cin, tituloCancion);
+                
+                insertarCancionAlbum(tituloAlbum, tituloCancion);
+                break;
+            }
+
+            case 9: {
+                // Eliminar canción de álbum
+                string tituloAlbum, tituloCancion;
+                
+                cout << "Ingrese título del álbum: ";
+                cin.ignore();
+                getline(cin, tituloAlbum);
+                
+                cout << "Ingrese título de la canción a eliminar: ";
+                getline(cin, tituloCancion);
+                
+                eliminarCancionAlbum(tituloAlbum, tituloCancion);
+                break;
+            }
+
+            case 10:
+                cout << "Volviendo al menú principal...\n";
+                break;
+
+            default:
+                cout << "Opción inválida.\n";
+        }
+    } while (opcion != 10);
+}
+
+void subMenuGenero() {
+    int opcion;
+    do {
+        cout << "\n--- SUBMENÚ GÉNEROS ---\n";
+        cout << "1. Insertar género\n";
+        cout << "2. Modificar ID de género\n";
+        cout << "3. Modificar nombre de género\n";
+        cout << "4. Modificar descripción de género\n";  
+        cout << "5. Eliminar género\n";
+        cout << "6. Mostrar géneros\n";
+        cout << "7. Añadir canción a género\n";          
+        cout << "8. Eliminar canción de género\n";       
+        cout << "9. Volver al menú anterior\n";
+        cout << "Seleccione una opción: ";
+        opcion = validInteger();
+
+        switch (opcion) {
+            case 1: {
+                // Insertar género (validación de duplicados)
+                int idGenero;
+                string nombreGenero, descripcion;
+                cout << "Ingrese ID del género: ";
+                idGenero = validInteger();
+
+                if (generoYaExiste(idGenero, "")) {
+                    cout << "Error: ID ya existe.\n";
+                    break;
+                }
+
+                cout << "Ingrese nombre del género: ";
+                cin >> nombreGenero;
+
+                if (generoYaExiste(0, nombreGenero)) {
+                    cout << "Error: Nombre ya existe.\n";
+                    break;
+                }
+
+                cout << "Ingrese descripción: ";
+                cin.ignore();
+                getline(cin, descripcion);  // Para permitir espacios
+
+            insertarGeneroMusical(idGenero, nombreGenero, descripcion);
+                break;
+            }
+
+            case 2: {
+                // Modificar ID de género
+                string nombre;
+                int nuevoID;
+                cout << "Ingrese nombre del género a modificar: ";
+                cin >> nombre;
+                cout << "Ingrese nuevo ID: ";
+                nuevoID = validInteger();
+
+                if (generoYaExiste(nuevoID, "")) {
+                    cout << "Error: Nuevo ID ya está en uso.\n";
+                    break;
+                }
+
+                modificarIDGeneroMusical(nombre, nuevoID);
+                break;
+            }
+
+            case 3: {
+                // Modificar nombre de género
+                string nombreActual, nuevoNombre;
+                cout << "Ingrese nombre actual del género: ";
+                cin >> nombreActual;
+                cout << "Ingrese nuevo nombre: ";
+                cin >> nuevoNombre;
+
+                if (generoYaExiste(0, nuevoNombre)) {
+                    cout << "Error: Nombre ya está en uso.\n";
+                    break;
+                }
+
+                modificarnombreGeneroMusical(nombreActual, nuevoNombre);
+                break;
+            }
+
+            case 4: {
+                // Modificar descripción
+                string nombre, nuevaDescripcion;
+                cout << "Ingrese nombre del género: ";
+                cin >> nombre;
+                cout << "Ingrese nueva descripción: ";
+                cin.ignore();
+                getline(cin, nuevaDescripcion);
+
+                modificarStringGeneroMusical(nombre, nuevaDescripcion);
+                break;
+            }
+
+            case 5: {
+                // Eliminar género
+                string nombre;
+                cout << "Ingrese nombre del género a eliminar: ";
+                cin >> nombre;
+                eliminarGeneroMusical(nombre);
+                break;
+            }
+
+            case 6:
+                imprimirGenerosMusicales();
+                break;
+
+            case 7: {
+                // Añadir canción a género
+                string nombreGenero, tituloCancion;
+                cout << "Ingrese nombre del género: ";
+                cin >> nombreGenero;
+                cout << "Ingrese título de la canción: ";
+                cin.ignore();
+                getline(cin, tituloCancion);
+
+                insertarCancionGeneroMusical(nombreGenero, tituloCancion);
+                break;
+            }
+
+            case 8: {
+                // Eliminar canción de género
+                string nombreGenero, tituloCancion;
+                cout << "Ingrese nombre del género: ";
+                cin >> nombreGenero;
+                cout << "Ingrese título de la canción: ";
+                cin.ignore();
+                getline(cin, tituloCancion);
+
+                eliminarCancionGeneroMusical(nombreGenero, tituloCancion);
+                break;
+            }
+
+            case 9:
+                cout << "Volviendo al menú principal...\n";
+                break;
+
+            default:
+                cout << "Opción inválida.\n";
+        }
+    } while (opcion != 9);
+}
+
+void subMenuPlaylist() {
+    int opcion;
+    do {
+        cout << "\n--- SUBMENÚ PLAYLISTS ---\n";
+        cout << "1. Insertar playlist\n";
+        cout << "2. Modificar ID de playlist\n";
+        cout << "3. Modificar nombre de playlist\n";
+        cout << "4. Modificar creador de playlist\n";
+        cout << "5. Modificar fecha de playlist\n";
+        cout << "6. Eliminar playlist\n";
+        cout << "7. Mostrar playlists\n";
+        cout << "8. Añadir canción a playlist\n";
+        cout << "9. Eliminar canción de playlist\n";
+        cout << "10. Volver al menú anterior\n";
+        cout << "Seleccione una opción: ";
+        opcion = validInteger();
+
+        switch (opcion) {
+            case 1: {
+                // Insertar playlist con validación de duplicados
+                int id, fecha;
+                string nombre, creador;
+                
+                cout << "Ingrese ID de la playlist: ";
+                id = validInteger();
+                
+                cout << "Ingrese nombre de la playlist: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                // Validar si ya existe
+                if (playlistYaExiste(id, nombre)) {
+                    break; // Salir si ya existe
+                }
+                
+                cout << "Ingrese nombre del creador: ";
+                getline(cin, creador);
+                
+                cout << "Ingrese fecha (formato YYYYMMDD): ";
+                fecha = validInteger();
+                
+                insertarPlaylist(id, nombre, creador, fecha);
+                cout << "Playlist creada exitosamente!\n";
+                break;
+            }
+
+            case 2: {
+                // Modificar ID de playlist con validación
+                string nombre;
+                int nuevoID;
+                
+                cout << "Ingrese nombre de la playlist a modificar: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo ID: ";
+                nuevoID = validInteger();
+                
+                // Validar si el nuevo ID ya existe
+                if (playlistYaExiste(nuevoID, "")) {
+                    cout << "Error: El nuevo ID ya está en uso por otra playlist.\n";
+                    break;
+                }
+                
+                modificarIDPlaylist(nombre, nuevoID);
+                break;
+            }
+
+            case 3: {
+                // Modificar nombre de playlist con validación
+                string nombreActual, nuevoNombre;
+                
+                cout << "Ingrese nombre actual de la playlist: ";
+                cin.ignore();
+                getline(cin, nombreActual);
+                
+                cout << "Ingrese nuevo nombre: ";
+                getline(cin, nuevoNombre);
+                
+                // Validar si el nuevo nombre ya existe
+                if (playlistYaExiste(0, nuevoNombre)) {
+                    cout << "Error: El nuevo nombre ya está en uso por otra playlist.\n";
+                    break;
+                }
+                
+                modificarNombrePlaylist(nombreActual, nuevoNombre);
+                break;
+            }
+
+            case 4: {
+                // Modificar creador (no necesita validación de duplicados)
+                string nombre, nuevoCreador;
+                
+                cout << "Ingrese nombre de la playlist: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo creador: ";
+                getline(cin, nuevoCreador);
+                
+                modificarCreadorPlaylist(nombre, nuevoCreador);
+                break;
+            }
+
+            case 5: {
+                // Modificar fecha (no necesita validación de duplicados)
+                string nombre;
+                int nuevaFecha;
+                
+                cout << "Ingrese nombre de la playlist: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nueva fecha (formato YYYYMMDD): ";
+                nuevaFecha = validInteger();
+                
+                modificarFechaPlaylist(nombre, nuevaFecha);
+                break;
+            }
+
+            case 6: {
+                // Eliminar playlist
+                string nombre;
+                
+                cout << "Ingrese nombre de la playlist a eliminar: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                eliminarPlaylist(nombre);
+                break;
+            }
+
+            case 7:
+                imprimirPlaylists();
+                break;
+
+            case 8: {
+                // Añadir canción a playlist
+                string nombrePlaylist, tituloCancion;
+                
+                cout << "Ingrese nombre de la playlist: ";
+                cin.ignore();
+                getline(cin, nombrePlaylist);
+                
+                cout << "Ingrese título de la canción: ";
+                getline(cin, tituloCancion);
+                
+                insertarCancionPlaylist(nombrePlaylist, tituloCancion);
+                break;
+            }
+
+            case 9: {
+                // Eliminar canción de playlist
+                string nombrePlaylist, tituloCancion;
+                
+                cout << "Ingrese nombre de la playlist: ";
+                cin.ignore();
+                getline(cin, nombrePlaylist);
+                
+                cout << "Ingrese título de la canción a eliminar: ";
+                getline(cin, tituloCancion);
+                
+                eliminarCancionPlaylist(nombrePlaylist, tituloCancion);
+                break;
+            }
+
+            case 10:
+                cout << "Volviendo al menú principal...\n";
+                break;
+
+            default:
+                cout << "Opción inválida.\n";
+        }
+    } while (opcion != 10);
+}
+
+
+
+void subMenuSello() {
+    int opcion;
+    do {
+        cout << "\n--- SUBMENÚ SELLOS DISCOGRÁFICOS ---\n";
+        cout << "1. Insertar sello\n";
+        cout << "2. Modificar ID de sello\n";
+        cout << "3. Modificar nombre de sello\n";
+        cout << "4. Modificar país de sello\n";
+        cout << "5. Modificar año de fundación\n";
+        cout << "6. Eliminar sello\n";
+        cout << "7. Mostrar sellos\n";
+        cout << "8. Añadir artista a sello\n";
+        cout << "9. Eliminar artista de sello\n";
+        cout << "10. Volver al menú anterior\n";
+        cout << "Seleccione una opción: ";
+        opcion = validInteger();
+
+        switch (opcion) {
+            case 1: {
+                // Insertar sello con validación
+                int id, anno;
+                string nombre, pais;
+                
+                cout << "Ingrese ID del sello: ";
+                id = validInteger();
+                
+                cout << "Ingrese nombre del sello: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                if (selloYaExiste(id, nombre)) {
+                    break;
+                }
+                
+                cout << "Ingrese país de origen: ";
+                getline(cin, pais);
+                
+                cout << "Ingrese año de fundación: ";
+                anno = validInteger();
+                
+                insertarSellosDiscograficos(id, nombre, pais, anno);
+                cout << "Sello creado exitosamente!\n";
+                break;
+            }
+
+            case 2: {
+                // Modificar ID con validación
+                string nombre;
+                int nuevoID;
+                
+                cout << "Ingrese nombre del sello a modificar: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo ID: ";
+                nuevoID = validInteger();
+                
+                if (selloYaExiste(nuevoID, "")) {
+                    break;
+                }
+                
+                modificarIDSelloDiscografico(nombre, nuevoID);
+                break;
+            }
+
+            case 3: {
+                // Modificar nombre con validación
+                string nombreActual, nuevoNombre;
+                
+                cout << "Ingrese nombre actual del sello: ";
+                cin.ignore();
+                getline(cin, nombreActual);
+                
+                cout << "Ingrese nuevo nombre: ";
+                getline(cin, nuevoNombre);
+                
+                if (selloYaExiste(0, nuevoNombre)) {
+                    break;
+                }
+                
+                modificarNombreSelloDiscografico(nombreActual, nuevoNombre);
+                break;
+            }
+
+            case 4: {
+                // Modificar país
+                string nombre, nuevoPais;
+                
+                cout << "Ingrese nombre del sello: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo país: ";
+                getline(cin, nuevoPais);
+                
+                modificarPaisSelloDiscografico(nombre, nuevoPais);
+                break;
+            }
+
+            case 5: {
+                // Modificar año de fundación
+                string nombre;
+                int nuevoAnno;
+                
+                cout << "Ingrese nombre del sello: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                cout << "Ingrese nuevo año de fundación: ";
+                nuevoAnno = validInteger();
+                
+                modificarAnnoFundacionSelloDiscografico(nombre, nuevoAnno);
+                break;
+            }
+
+            case 6: {
+                // Eliminar sello
+                string nombre;
+                
+                cout << "Ingrese nombre del sello a eliminar: ";
+                cin.ignore();
+                getline(cin, nombre);
+                
+                eliminarSelloDiscografico(nombre);
+                break;
+            }
+
+            case 7:
+                imprimirSellosDiscograficos();
+                break;
+
+            case 8: {
+                // Añadir artista a sello
+                string nombreSello, nombreArtista;
+                
+                cout << "Ingrese nombre del sello: ";
+                cin.ignore();
+                getline(cin, nombreSello);
+                
+                cout << "Ingrese nombre del artista: ";
+                getline(cin, nombreArtista);
+                
+                insertarArtistaSelloDiscografico(nombreSello, nombreArtista);
+                break;
+            }
+
+            case 9: {
+                // Eliminar artista de sello
+                string nombreSello, nombreArtista;
+                
+                cout << "Ingrese nombre del sello: ";
+                cin.ignore();
+                getline(cin, nombreSello);
+                
+                cout << "Ingrese nombre del artista a eliminar: ";
+                getline(cin, nombreArtista);
+                
+                eliminarArtistaSelloDiscografico(nombreSello, nombreArtista);
+                break;
+            }
+
+            case 10:
+                cout << "Volviendo al menú principal...\n";
+                break;
+
+            default:
+                cout << "Opción inválida.\n";
+        }
+    } while (opcion != 10);
+}
+
+void Mantenimiento() {
+int opcion;
+do {
+cout << "\n----- Submenú Mantenimiento -----" << endl;
+cout << "1. Agregar Artista" << endl;
+cout << "2. Agregar Álbum" << endl;
+cout << "3. Agregar Canción" << endl;
+cout << "4. Agregar Género Musical" << endl;
+cout << "5. Agregar Playlist" << endl;
+cout << "6. Agregar Sello Discográfico" << endl;
+cout << "7. Volver al Menú Principal" << endl;
+cout << "Seleccione una opción: ";
+opcion = validInteger();
+
+    switch(opcion) {
+        case 1: subMenuArtista(); break;
+        case 2: subMenuAlbum(); break;
+        case 3: subMenuCancion(); break;
+        case 4: subMenuGenero(); break;
+        case 5: subMenuPlaylist(); break;
+        case 6: subMenuSello(); break;
+        case 7: cout << "Volviendo al menú principal..." << endl; break;
+        default: cout << "Opción no válida. Intente de nuevo." << endl; break;
+    }
+} while (opcion != 7); 
+}
+
+
+
+
 
 void consultasAux(){
     cout << "\n" << "-------------------------------------------------" << endl;
@@ -1453,44 +2630,6 @@ void consultasAux(){
     cout << "Presione un número para seleccionar que hacer " << endl;
     
 }
-
-void consultas(){
-    int n;
-    while (true){
-        consultasAux();
-        n = validInteger();
-        switch (n){
-            case 1:
-                generoPopular();
-                break;
-            case 2:
-                artistaTrabajador();
-                break;
-            case 3:
-                cancionLarga();
-                break;
-            case 4:
-                playlistLarga();
-            case 5:
-                albumesPorArtista();
-            case 6:
-                selloDiscograficoPopular();
-                break;
-            case 7:
-                int x = validInteger();
-                cancionesEnAnnoDetermindado(x);
-                break;
-            case 8:
-                int x = validInteger();
-                albumesSuperiorNumero(x);
-                break;
-            case 9:
-                interfaz();
-                return;
-        }
-    }
-}
-
 void reportes(){
 
 }
@@ -1507,6 +2646,62 @@ void interfazAux(){
     cout << "Presione un número para seleccionar que hacer " << endl;
 }
 
+void consultas() {
+    int opcion;
+    do {
+        consultasAux();
+        opcion = validInteger();
+        
+        switch(opcion) {
+            case 1:
+                generoPopular();
+                break;
+            case 2:
+                artistaTrabajador();
+                break;
+            case 3:
+                cancionLarga();
+                break;
+            case 4:
+                playlistLarga();
+                break;
+            case 5:
+                albumesPorArtista();
+                break;
+            case 6:
+                selloDiscograficoPopular();
+                break;
+            case 7: {
+                cout << "Ingrese el año a consultar: ";
+                int x = validInteger();
+                cancionesEnAnnoDetermindado(x);
+                break;
+            }
+            case 8: {
+                cout << "Ingrese el número mínimo de canciones: ";
+                int x = validInteger();
+                albumesSuperiorNumero(x);
+                break;
+            }
+            case 9:
+                cout << "Volviendo al menú anterior..." << endl;
+                break;
+            default:
+                cout << "Opción no válida. Intente de nuevo." << endl;
+                break;
+        }
+        
+        // Pausa para ver resultados antes de volver al menú
+        if(opcion != 9) {
+            cout << "\nPresione Enter para continuar...";
+            cin.ignore();
+            cin.get();
+        }
+        
+    } while(opcion != 9);  // Sale del bucle cuando elige 9 (Volver)
+}
+
+
 void interfaz(){
     int n;
     while (true){
@@ -1514,7 +2709,7 @@ void interfaz(){
         n = validInteger();
         switch (n){
             case 1:
-                mantenimiento();
+                Mantenimiento();
                 break;
             case 2:
                 consultas();
@@ -1527,6 +2722,9 @@ void interfaz(){
         }
     }
 }
+
+
+
 
 
 
@@ -1597,7 +2795,7 @@ int main (){
     imprimirPlaylists();
     imprimirGenerosMusicales();
     imprimirSellosDiscograficos();
-    
+    interfaz();
 
     return 0;
 }
