@@ -2544,14 +2544,53 @@ void consultasAux(){
     cout << "Presione un número para seleccionar que hacer " << endl;
     
 }
-void reportes(){ 
-    imprimirCanciones();
-    imprimirAlbumes();
-    imprimirArtistas();
-    imprimirGenerosMusicales();
-    imprimirPlaylists();
-    imprimirSellosDiscograficos();
+//actualización del menú reportes hecha por jose mario castro cruz el 8/5/2025
+void reportes() {
+    int opcion;
+    std::cout << "=== MENÚ DE REPORTES ===\n";
+    std::cout << "1. Imprimir todo\n";
+    std::cout << "2. Imprimir canciones\n";
+    std::cout << "3. Imprimir álbumes\n";
+    std::cout << "4. Imprimir artistas\n";
+    std::cout << "5. Imprimir géneros musicales\n";
+    std::cout << "6. Imprimir playlists\n";
+    std::cout << "7. Imprimir sellos discográficos\n";
+    std::cout << "Seleccione una opción: ";
+    std::cin >> opcion;
+
+    switch(opcion) {
+        case 1:
+            imprimirCanciones();
+            imprimirAlbumes();
+            imprimirArtistas();
+            imprimirGenerosMusicales();
+            imprimirPlaylists();
+            imprimirSellosDiscograficos();
+            break;
+        case 2:
+            imprimirCanciones();
+            break;
+        case 3:
+            imprimirAlbumes();
+            break;
+        case 4:
+            imprimirArtistas();
+            break;
+        case 5:
+            imprimirGenerosMusicales();
+            break;
+        case 6:
+            imprimirPlaylists();
+            break;
+        case 7:
+            imprimirSellosDiscograficos();
+            break;
+        default:
+            std::cout << "Opción inválida.\n";
+            break;
+    }
 }
+
 
 void interfazAux(){
     cout << "\n" << "-------------------------------------------------" << endl;
