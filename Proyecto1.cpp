@@ -1238,51 +1238,28 @@ void imprimirCanciones(){
 }
 
 
-Sublista_Canciones* ordenarPorDuracion(Sublista_Canciones* cabeza) {
-    if (cabeza == nullptr || cabeza->sig == nullptr)
-        return cabeza;
 
-    Sublista_Canciones* ordenada = nullptr;
-
-    while (cabeza != nullptr) {
-        Sublista_Canciones* actual = cabeza;
-        cabeza = cabeza->sig;
-
-        if (ordenada == nullptr || actual->cancion->Duracion < ordenada->cancion->Duracion) {
-            actual->sig = ordenada;
-            ordenada = actual;
-        } else {
-            Sublista_Canciones* temp = ordenada;
-            while (temp->sig != nullptr && temp->sig->cancion->Duracion < actual->cancion->Duracion)
-                temp = temp->sig;
-
-            actual->sig = temp->sig;
-            temp->sig = actual;
-        }
-    }
-
-    return ordenada;
-}
 
 //Imprime un álbum individual con todos sus atributos
-void imprimirAlbum(Albumes * temp, bool printDetails){
+void imprimirAlbum(Albumes * temp, bool printDetails) {
     cout << "---------------------------------" << endl;
     cout << "ID de Album: " << temp->ID << endl;
     cout << "Título: " << temp->Titulo << endl;
     cout << "Año: " << temp->Anno << endl;
     cout << "Número de Canciones: " << temp->N_canciones << endl;
     cout << "---------------------------------" << endl;
-    cout << "Canciones del Álbum: " << endl;
-    if (printDetails){
-        Sublista_Canciones* cancionesOrdenadas = ordenarPorDuracion(temp->canciones);
-        while (cancionesOrdenadas != nullptr) {
-            imprimirCancion(cancionesOrdenadas->cancion);
-            cancionesOrdenadas = cancionesOrdenadas->sig;
+    if (printDetails) {
+        cout << "Canciones del Álbum: " << endl;
+        Sublista_Canciones* canciones = temp->canciones; // Ya están ordenadas al insertar
+        while (canciones != nullptr) {
+            if (canciones->cancion != nullptr) {
+                imprimirCancion(canciones->cancion);
+            }
+            canciones = canciones->sig;
         }
     }
-    
-    
 }
+
 
 //Imprime todos las álbumes disponibles
 void imprimirAlbumes(){
@@ -1302,26 +1279,30 @@ void imprimirArtista(Artistas * temp, bool printDetails){
     cout << "Nombre Artístico: " << temp -> Nombre_Artistico << endl;
     cout << "Nombre Real: " << temp -> Nombre_Real << endl;
     cout << "País: " << temp -> Pais << endl;
-    cout << "Sello Discográfico: " <<temp -> Sello_Discografico << endl;
+    cout << "Sello Discográfico: " << temp -> Sello_Discografico << endl;
     cout << "---------------------------------" << endl;
     cout << "Canciones del Artista: " << endl;
-    //printDetails determina si se quiere imprimir los álbumes y canciones del artista o solo la información del artista
-    if (!printDetails){
+    if (!printDetails){  //printDetails determina si se quiere imprimir los álbumes y canciones del artista o solo la información del artista
         return;
     }
     Sublista_Canciones * temp2 = temp->canciones;
     while(temp2 != nullptr){
-        imprimirCancion(temp2->cancion);
+        if(temp2->cancion != nullptr) {
+            imprimirCancion(temp2->cancion);
+        }
         temp2 = temp2 -> sig;
     }
     cout << "---------------------------------" << endl;
     cout << "Álbumes del Artista: " << endl;
     Sublista_Albumes * temp3 = temp->albumes;
     while(temp3 != nullptr){
-        imprimirAlbum(temp3->album,false);
+        if(temp3->album != nullptr) {
+            imprimirAlbum(temp3->album,false);
+        }
         temp3 = temp3 -> sig;
     }
 }
+
 //Imprime todos los artistas disponibles
 void imprimirArtistas(){
     cout << "---------------------------------" << endl;
@@ -1339,7 +1320,7 @@ void imprimirGenerosMusicales(){
     cout << "Imprimiendo todos los géneros musicales" << endl; 
     cout << "---------------------------------" << endl;
     Generos_Musicales * temp = primeroG;
-    do{
+    do {
         cout << "---------------------------------" << endl;
         cout << "ID de Género Musical: " << temp->ID << endl;
         cout << "Nombre de Género Musical: " << temp->Nombre << endl;
@@ -1347,14 +1328,16 @@ void imprimirGenerosMusicales(){
         cout << "---------------------------------" << endl;
         cout << "Canciones del Género Musical: " << endl;
         Sublista_Canciones * temp2 = temp->canciones;
-        while(temp2 != nullptr){
-            imprimirCancion(temp2->cancion);
-            temp2 = temp2 -> sig;
+        while (temp2 != nullptr) {
+            if (temp2->cancion != nullptr) {
+                imprimirCancion(temp2->cancion);
+            }
+            temp2 = temp2->sig;
         }
         temp = temp->sig;
-    }
-    while(temp != primeroG);
+    } while (temp != primeroG);
 }
+
 //Imprime todas las playlist disponibles
 void imprimirPlaylists(){
     cout << "---------------------------------" << endl;
@@ -1363,41 +1346,47 @@ void imprimirPlaylists(){
     Playlist * temp = primeroP;
     while (temp != nullptr){
         cout << "---------------------------------" << endl;
-        cout << "ID de Playlist: " << temp -> ID << endl;
-        cout << "Nombre de Playlist: " << temp -> Nombre << endl;
-        cout << "Creador de Playlist: " << temp -> Creador << endl;
+        cout << "ID de Playlist: " << temp->ID << endl;
+        cout << "Nombre de Playlist: " << temp->Nombre << endl;
+        cout << "Creador de Playlist: " << temp->Creador << endl;
         cout << "Fecha de Playlist: " << temp->Fecha << endl;
         cout << "---------------------------------" << endl;
         cout << "Canciones de la Playlist: " << endl;
         Sublista_Canciones * temp2 = temp->canciones;
-        while(temp2 != nullptr){
-            imprimirCancion(temp2->cancion);
-            temp2 = temp2 -> sig;
+        while (temp2 != nullptr){
+            if (temp2->cancion != nullptr){
+                imprimirCancion(temp2->cancion);
+            }
+            temp2 = temp2->sig;
         }
         temp = temp->sig;
     }
 }
+
 //Imprime todos los sellos discográficos disponibles
 void imprimirSellosDiscograficos(){
     cout << "---------------------------------" << endl;
-    cout << "Imprimiendo todos los sellos discograficos " << endl; 
+    cout << "Imprimiendo todos los sellos discográficos " << endl; 
     cout << "---------------------------------" << endl;
     Sellos_Discograficos * temp = primeroSD;
-    do{
+    do {
         cout << "---------------------------------" << endl;
-        cout << "ID de Sello Discográfico: " << temp -> ID << endl;
+        cout << "ID de Sello Discográfico: " << temp->ID << endl;
         cout << "Nombre de Sello Discográfico: " << temp->Nombre << endl;
-        cout << "Pais de Sello Discográfico: " << temp->Pais << endl;
-        cout << "Año de Fundacion de Sello Discográfico: " << temp->Anno_fundacion << endl;
+        cout << "País de Sello Discográfico: " << temp->Pais << endl;
+        cout << "Año de Fundación de Sello Discográfico: " << temp->Anno_fundacion << endl;
         cout << "---------------------------------" << endl;
         Sublista_Artistas * temp2 = temp->artistas;
         while (temp2 != nullptr){
-            imprimirArtista(temp2->artista,false);
-            temp2 = temp2 -> sig;
+            if (temp2->artista != nullptr){
+                imprimirArtista(temp2->artista, false);
+            }
+            temp2 = temp2->sig;
         }
-    }
-    while (temp != primeroSD);
+        temp = temp->sig;
+    } while (temp != primeroSD);
 }
+
 
 //Consultas
 
@@ -1528,7 +1517,7 @@ string validString() {
     string input;
 
     while (true) {
-        cin >> input;  // Leer solo la siguiente palabra o conjunto de caracteres sin espacios
+         getline(cin, input);  // Leer solo la siguiente palabra o conjunto de caracteres sin espacios
 
         bool isValid = true;
 
@@ -1824,6 +1813,7 @@ void subMenuArtista() {
                 cout << "Ingrese nombre real: ";
                 getline(cin, nombre_real);
                 cout << "Ingrese país de origen: ";
+                pais =validInteger();
                 getline(cin, pais);
                 insertarArtistas(id, nombre_artistico, nombre_real, pais);
                 cout << "Artista creado exitosamente!\n";
@@ -2439,6 +2429,7 @@ void subMenuSello() {
                 }
                 
                 cout << "Ingrese país de origen: ";
+                nombre = validString();
                 getline(cin, pais);
                 
                 cout << "Ingrese año de fundación: ";
@@ -2569,12 +2560,12 @@ void Mantenimiento() {
     int opcion;
     do {
         cout << "\n----- Submenú Mantenimiento -----" << endl;
-        cout << "1. Agregar Artista" << endl;
-        cout << "2. Agregar Álbum" << endl;
-        cout << "3. Agregar Canción" << endl;
-        cout << "4. Agregar Género Musical" << endl;
-        cout << "5. Agregar Playlist" << endl;
-        cout << "6. Agregar Sello Discográfico" << endl;
+        cout << "1. Artistas" << endl;
+        cout << "2. Álbums" << endl;
+        cout << "3. Canciones" << endl;
+        cout << "4. Géneros Musicales" << endl;
+        cout << "5. Playlists" << endl;
+        cout << "6. Sellos Discográficos" << endl;
         cout << "7. Volver al Menú Principal" << endl;
         cout << "Seleccione una opción: ";
         opcion = validInteger();
@@ -2792,16 +2783,32 @@ int main (){
     insertarArtistas(101,"Beabadoobee","Beatrice Kristi Laus","Philippines");
     insertarArtistas(505,"J. Cole","Jermaine Cole","USA");
     insertarArtistas(808,"Future","Nayvadius DeMun Wilburn","USA");
+    insertarArtistas(202, "Taylor Swift", "Taylor Alison Swift", "USA");
+    insertarArtistas(707, "Bad Bunny", "Benito Antonio Martínez Ocasio", "Puerto Rico");
+    insertarArtistas(404, "BTS", "Bangtan Sonyeondan", "South Korea");
 
 
     insertarGeneroMusical(111,"Rap","You know what rap is");
     insertarGeneroMusical(222,"Indie","Idk if this is a real genre");
     insertarGeneroMusical(333,"Pop","Like taylor swift or something");
     insertarGeneroMusical(444,"Country","The one nobody likes");
+    insertarGeneroMusical(555, "Rock", "Guitar-driven music genre");
+    insertarGeneroMusical(666, "Electronic", "Music created using electronic instruments");
+    insertarGeneroMusical(777, "R&B", "Rhythm and Blues");
+    insertarGeneroMusical(888, "Jazz", "Improvisational music with swing and blue notes");
+    insertarGeneroMusical(999, "Classical", "Traditional Western art music");
+    insertarGeneroMusical(101, "Hip Hop", "Urban music genre originating in the Bronx");
 
     insertarPlaylist(231,"Best hits","Random Dude",2025);
     insertarPlaylist(324,"Running or idk","Runner",2077);
     insertarPlaylist(431,"Sleeping","Lazy guy",2024);
+    insertarPlaylist(567, "Workout Mix", "Fitness Guru", 2023);
+    insertarPlaylist(890, "Chill Vibes", "Relaxation Expert", 2022);
+    insertarPlaylist(123, "Study Focus", "Student", 2024);
+    insertarPlaylist(456, "Party Hits", "DJ", 2023);
+    insertarPlaylist(789, "Road Trip", "Traveler", 2021);
+    insertarPlaylist(234, "Rainy Day", "Weather Fan", 2020);
+    insertarPlaylist(901, "Morning Coffee", "Barista", 2023);
 
     insertarSellosDiscograficos(789, "Sony Music Japan", "Japan", 1968); // Yoasobi
     insertarSellosDiscograficos(456, "FADER Label", "USA", 2002); // Clairo
@@ -2810,6 +2817,92 @@ int main (){
     insertarSellosDiscograficos(901, "Dirty Hit", "UK", 2010); // Beabadoobee
     insertarSellosDiscograficos(678, "Dreamville Records", "USA", 2007); // J. Cole
     insertarSellosDiscograficos(345, "Epic Records", "USA", 1953); // Future
+    insertarSellosDiscograficos(111, "Republic Records", "USA", 1995);
+    insertarSellosDiscograficos(222, "Interscope Records", "USA", 1990);
+    insertarSellosDiscograficos(333, "Atlantic Records", "USA", 1947);
+
+
+    insertarCancionAlbum("Charm", "Show me how");
+    insertarCancionAlbum("Charm", "Numb");
+    insertarCancionAlbum("THE BOOK 2", "Yoru ni Kakeru");
+    insertarCancionAlbum("Immunity", "Sofia");
+    insertarCancionAlbum("DS4EVER", "Pushin P");
+    insertarCancionAlbum("Forever Live Sessions", "Forever");
+    insertarCancionAlbum("Beatopia", "Glue Song");
+    insertarCancionAlbum("2014 Forest Hills Drive", "Wet Dreamz");
+    insertarCancionAlbum("High Off Life", "The London");
+    insertarCancionAlbum("The Book", "Yoru ni Kakeru");
+
+    insertarCancionArtista("Men I Trust", "Show me how");
+    insertarCancionArtista("Men I Trust", "Halcyon");
+    insertarCancionArtista("Clairo", "Forever");
+    insertarCancionArtista("Beabadoobee", "Glue Song");
+    insertarCancionArtista("J. Cole", "The London");
+    insertarCancionArtista("Yoasobi", "Yoru ni Kakeru");
+    insertarCancionArtista("Gunna", "Pushin P");
+    insertarCancionArtista("Men I Trust", "Numb");
+    insertarCancionArtista("Clairo", "Sofia");
+    insertarCancionArtista("Beabadoobee", "See You Soon");
+
+    insertarAlbumArtista("Men I Trust", "Charm");
+    insertarAlbumArtista("Yoasobi", "THE BOOK 2");
+    insertarAlbumArtista("Clairo", "Immunity");
+    insertarAlbumArtista("Gunna", "DS4EVER");
+    insertarAlbumArtista("Men I Trust", "Forever Live Sessions");
+    insertarAlbumArtista("Beabadoobee", "Beatopia");
+    insertarAlbumArtista("J. Cole", "2014 Forest Hills Drive");
+    insertarAlbumArtista("Future", "High Off Life");
+    insertarAlbumArtista("Yoasobi", "The Book");
+    insertarAlbumArtista("Clairo", "Sling");
+
+    insertarCancionGeneroMusical("Indie", "Show me how");
+    insertarCancionGeneroMusical("Indie", "Halcyon");
+    insertarCancionGeneroMusical("Pop", "Forever");
+    insertarCancionGeneroMusical("Indie", "Glue Song");
+    insertarCancionGeneroMusical("Rap", "The London");
+    insertarCancionGeneroMusical("Pop", "Yoru ni Kakeru");
+    insertarCancionGeneroMusical("Rap", "Pushin P");
+    insertarCancionGeneroMusical("Indie", "Numb");
+    insertarCancionGeneroMusical("Indie", "Sofia");
+    insertarCancionGeneroMusical("Indie", "See You Soon");
+
+    insertarCancionPlaylist("Best hits", "Show me how");
+    insertarCancionPlaylist("Best hits", "Yoru ni Kakeru");
+    insertarCancionPlaylist("Running or idk", "Pushin P");
+    insertarCancionPlaylist("Running or idk", "The London");
+    insertarCancionPlaylist("Sleeping", "Glue Song");
+    insertarCancionPlaylist("Sleeping", "Numb");
+    insertarCancionPlaylist("Workout Mix", "Pushin P");
+    insertarCancionPlaylist("Chill Vibes", "Show me how");
+    insertarCancionPlaylist("Study Focus", "Numb");
+    insertarCancionPlaylist("Party Hits", "The London");
+
+    insertarArtistaSelloDiscografico("Sony Music Japan", "Yoasobi");
+    insertarArtistaSelloDiscografico("FADER Label", "Clairo");
+    insertarArtistaSelloDiscografico("YSL Records", "Gunna");
+    insertarArtistaSelloDiscografico("Dirty Hit", "Beabadoobee");
+    insertarArtistaSelloDiscografico("Dreamville Records", "J. Cole");
+    insertarArtistaSelloDiscografico("Epic Records", "Future");
+    insertarArtistaSelloDiscografico("Republic Records", "Taylor Swift");
+    insertarArtistaSelloDiscografico("Interscope Records", "Bad Bunny");
+    insertarArtistaSelloDiscografico("Atlantic Records", "BTS");
+    insertarArtistaSelloDiscografico("Independent", "Men I Trust");
+
+    
+    eliminarCancionAlbum("Charm", "Numb");
+    eliminarCancionArtista("Men I Trust", "Halcyon");
+    eliminarCancionGeneroMusical("Indie", "Show me how");
+    eliminarCancionPlaylist("Best hits", "Show me how");
+    eliminarAlbumArtista("Men I Trust", "Forever Live Sessions");
+    eliminarArtistaSelloDiscografico("Independent", "Men I Trust");
+
+ 
+    eliminarCancion("See You Soon");
+    eliminarAlbum("Sling");
+    eliminarArtista("Future");
+    eliminarGeneroMusical("Country");
+    eliminarPlaylist("Sleeping");
+    eliminarSelloDiscografico("Epic Records");
 
     imprimirCanciones();
     imprimirAlbumes();
