@@ -7,7 +7,7 @@ using namespace std;
 //Integrantes del grupo: Jose Mario Castro Cruz y Justin Jamal Morris Bains
 
 //Fecha de incio: 14 de abril 2025
-//Última modificación: 8 de mayo 2025
+//Última modificación: 11 de mayo 2025
 
 //Lista simple con inserción al inicio, Sublista_Canciones apunta al nodo de la canción que quiere agregar
 struct Canciones {
@@ -299,7 +299,7 @@ void eliminarCancion(string titulo){
         if (temp -> Titulo == titulo){
             tempAnt -> sig = temp -> sig;
             cout << "Canción eliminada " << endl;
-            temp=nullptr;
+            delete temp;
             return;
         }
         tempAnt = temp;
@@ -393,7 +393,7 @@ void eliminarAlbum(string titulo){
         if (temp -> Titulo == titulo){
             tempAnt -> sig = temp -> sig;
             cout << "Álbum eliminado " << endl;
-            temp=nullptr;
+            delete temp;
             return;
         }
         tempAnt = temp;
@@ -594,7 +594,7 @@ void eliminarArtista(string tituloAlb){
             primeroArt -> ant = nullptr;
         }
 
-        temp=nullptr;
+        delete temp;
     }
     else{
         if (temp -> ant != nullptr){
@@ -603,7 +603,7 @@ void eliminarArtista(string tituloAlb){
         if (temp -> sig != nullptr){
             temp -> sig -> ant = temp -> ant;
         }
-        nullptr;
+        delete temp;
     }
 }
 
@@ -835,7 +835,7 @@ void eliminarGeneroMusical (string nombre){
                     ult -> sig = primeroG;
                 }
             }
-            temp=nullptr;
+            delete temp;
             return;
         }
     } while (temp != primeroG);
@@ -893,7 +893,7 @@ void eliminarCancionGeneroMusical(string nombre, string tituloC){
     else{
         if (gm -> canciones -> cancion -> Titulo == tituloC){
             gm -> canciones = gm -> canciones -> sig;
-            cout << "Canción elimnada de género musical " << endl;
+            cout << "Canción eliminada de género musical " << endl;
         }
         else{
             eliminarCancionGeneroMusicalAux(gm,cancion);
@@ -977,7 +977,7 @@ void eliminarPlaylist(string nombre){
         if (temp -> Nombre == nombre){
             tempAnt -> sig = temp -> sig;
             cout << "Playlist eliminada " << endl;
-            temp=nullptr;
+            delete temp;
             return;
         }
         tempAnt = temp;
@@ -1316,10 +1316,14 @@ void imprimirArtistas(){
 }
 //Imprime todos los géneros musicales disponibles
 void imprimirGenerosMusicales(){
+    Generos_Musicales * temp = primeroG;
+    if (temp == nullptr){
+        cout << "No hay géneros musicales ingresados" << endl;
+        return;
+    }
     cout << "---------------------------------" << endl;
     cout << "Imprimiendo todos los géneros musicales" << endl; 
     cout << "---------------------------------" << endl;
-    Generos_Musicales * temp = primeroG;
     do {
         cout << "---------------------------------" << endl;
         cout << "ID de Género Musical: " << temp->ID << endl;
@@ -1365,10 +1369,14 @@ void imprimirPlaylists(){
 
 //Imprime todos los sellos discográficos disponibles
 void imprimirSellosDiscograficos(){
+    Sellos_Discograficos * temp = primeroSD;
+    if (temp == nullptr){
+        cout << "No hay sellos discográficos ingresados" << endl;
+        return;
+    }
     cout << "---------------------------------" << endl;
     cout << "Imprimiendo todos los sellos discográficos " << endl; 
     cout << "---------------------------------" << endl;
-    Sellos_Discograficos * temp = primeroSD;
     do {
         cout << "---------------------------------" << endl;
         cout << "ID de Sello Discográfico: " << temp->ID << endl;
@@ -1394,6 +1402,10 @@ void imprimirSellosDiscograficos(){
 void generoPopular(){
     Generos_Musicales * temp = primeroG;
     Generos_Musicales * max = temp;
+    if (temp == nullptr){
+        cout << "No hay géneros musicales ingresados" << endl;
+        return;
+    }
     do{
         if (temp -> numero_canciones > max -> numero_canciones){
             max = temp;
@@ -1408,6 +1420,10 @@ void generoPopular(){
 void artistaTrabajador(){
     Artistas * temp = primeroArt;
     Artistas * max = temp;
+    if (temp == nullptr){
+        cout << "No hay artistas ingresados" << endl;
+        return;
+    }
     while(temp != nullptr){
         if (temp->albumes_publicados > max -> albumes_publicados){
             max = temp;
@@ -1422,6 +1438,10 @@ void artistaTrabajador(){
 void cancionLarga(){
     Canciones * temp = primeroC;
     Canciones * max = temp;
+    if (temp == nullptr){
+        cout << "No hay canciones ingresadas" << endl;
+        return;
+    }
     while (temp != nullptr){
         if (temp -> Duracion > max -> Duracion){
             max = temp;
@@ -1436,6 +1456,10 @@ void cancionLarga(){
 void playlistLarga(){
     Playlist * temp = primeroP;
     Playlist * max = temp;
+    if (temp == nullptr){
+        cout << "No hay playlist ingresadas" << endl;
+        return;
+    }
     while (temp != nullptr){
         if (temp -> numero_canciones > max -> numero_canciones){
             max = temp;
@@ -1448,6 +1472,10 @@ void playlistLarga(){
 //Imprime la cantidad de álbumes que tiene cada artista
 void albumesPorArtista(){
     Artistas * temp = primeroArt;
+    if (temp == nullptr){
+        cout << "No hay álbumes ingresados" << endl;
+        return;
+    }
     cout << "---------------------------------" << endl;
     cout << "Álbumes por Artista: " << endl;
     cout << "---------------------------------" << endl;
@@ -1460,6 +1488,10 @@ void albumesPorArtista(){
 void selloDiscograficoPopular(){
     Sellos_Discograficos * temp = primeroSD;
     Sellos_Discograficos * max = temp;
+    if (temp == nullptr){
+        cout << "No hay sellos discográficos ingresados" << endl;
+        return;
+    }
     do{
         if (temp->numero_artistas > max -> numero_artistas){
             max = temp;
@@ -1474,6 +1506,10 @@ void selloDiscograficoPopular(){
 void cancionesEnAnnoDetermindado (int a){
     Albumes * temp = primeroAlb;
     cout << "Álbumes publicados en  " << a <<": "<< endl;
+    if (primeroAlb == nullptr){
+        cout << "No hay álbumes publicados en " << a << endl;
+        return;
+    }
     while(temp != nullptr){
         if (temp -> Anno = a){
             imprimirAlbum(temp,true);
@@ -2588,7 +2624,7 @@ void consultasAux(){
     cout << "\n" << "-------------------------------------------------" << endl;
     cout << "Menu de consultas" << endl;
     cout << "1 = Género con más canciones registradas" << endl;
-    cout << "2 = Artista con más ablumes publicados " << endl;
+    cout << "2 = Artista con más álbumes publicados " << endl;
     cout << "3 = Canción más larga de la base de datos" << endl;
     cout << "4 = Playlist con más canciones" << endl;
     cout << "5 = Cantidad de álbumes por artista" << endl;
@@ -2747,34 +2783,34 @@ int main (){
 
     //Test cases (10 por función)
 
-    insertarCancion(111,"Show me how",5); //Men I Trust
-    insertarCancion(213, "Halcyon", 4); // Men I Trust
-    insertarCancion(789, "Forever", 3); // Clairo
-    insertarCancion(345, "Glue Song", 3); // Beabadoobee
-    insertarCancion(567, "The London", 4); // J. Cole, Future
-    insertarCancion(910, "Yoru ni Kakeru", 4); // Yoasobi
-    insertarCancion(678, "Pushin P", 2); // Gunna
-    insertarCancion(432, "Numb", 3); // Men I Trust
-    insertarCancion(156, "Sofia", 3); // Clairo
-    insertarCancion(299, "See You Soon", 3); // Beabadoobee
-    insertarCancion(701, "Wet Dreamz", 4); // J. Cole
+    insertarCancion(111,"Show me how",5); 
+    insertarCancion(213, "Halcyon", 4); 
+    insertarCancion(789, "Forever", 3); 
+    insertarCancion(345, "Glue Song", 3); 
+    insertarCancion(567, "The London", 4); 
+    insertarCancion(910, "Yoru ni Kakeru", 4); 
+    insertarCancion(678, "Pushin P", 2); 
+    insertarCancion(432, "Numb", 3); 
+    insertarCancion(156, "Sofia", 3); 
+    insertarCancion(299, "See You Soon", 3); 
+    insertarCancion(701, "Wet Dreamz", 4); 
 
 
     insertarAlbum(243,"Charm",2024);
-    insertarAlbum(382, "THE BOOK 2", 2023); // Yoasobi
-    insertarAlbum(715, "Immunity", 2019); // Clairo
-    insertarAlbum(926, "DS4EVER", 2022); // Gunna
-    insertarAlbum(564, "Forever Live Sessions", 2021); // Men I Trust
-    insertarAlbum(837, "Beatopia", 2022); // Beabadoobee
-    insertarAlbum(490, "2014 Forest Hills Drive", 2014); // J. Cole
-    insertarAlbum(311, "High Off Life", 2020); // Future
-    insertarAlbum(112, "The Book", 2021); // Yoasobi
-    insertarAlbum(456, "Sling", 2021); // Clairo
-    insertarAlbum(789, "Wunna", 2020); // Gunna
-    insertarAlbum(234, "Oncle Jazz", 2019); // Men I Trust
-    insertarAlbum(678, "Fake It Flowers", 2020); // Beabadoobee
-    insertarAlbum(901, "KOD", 2018); // J. Cole
-    insertarAlbum(345, "I Never Liked You", 2022); // Future
+    insertarAlbum(382, "THE BOOK 2", 2023); 
+    insertarAlbum(715, "Immunity", 2019); 
+    insertarAlbum(926, "DS4EVER", 2022); 
+    insertarAlbum(564, "Forever Live Sessions", 2021); 
+    insertarAlbum(837, "Beatopia", 2022); 
+    insertarAlbum(490, "2014 Forest Hills Drive", 2014); 
+    insertarAlbum(311, "High Off Life", 2020); 
+    insertarAlbum(112, "The Book", 2021); 
+    insertarAlbum(456, "Sling", 2021); 
+    insertarAlbum(789, "Wunna", 2020); 
+    insertarAlbum(234, "Oncle Jazz", 2019); 
+    insertarAlbum(678, "Fake It Flowers", 2020); 
+    insertarAlbum(901, "KOD", 2018); 
+    insertarAlbum(345, "I Never Liked You", 2022); 
 
     insertarArtistas(456,"Yoasobi","Lilas","Japan");
     insertarArtistas(123,"Clairo","Claire","USA");
@@ -2810,13 +2846,13 @@ int main (){
     insertarPlaylist(234, "Rainy Day", "Weather Fan", 2020);
     insertarPlaylist(901, "Morning Coffee", "Barista", 2023);
 
-    insertarSellosDiscograficos(789, "Sony Music Japan", "Japan", 1968); // Yoasobi
-    insertarSellosDiscograficos(456, "FADER Label", "USA", 2002); // Clairo
-    insertarSellosDiscograficos(234, "YSL Records", "USA", 2016); // Gunna
-    insertarSellosDiscograficos(567, "Independent", "Canada", 2015); // Men I Trust
-    insertarSellosDiscograficos(901, "Dirty Hit", "UK", 2010); // Beabadoobee
-    insertarSellosDiscograficos(678, "Dreamville Records", "USA", 2007); // J. Cole
-    insertarSellosDiscograficos(345, "Epic Records", "USA", 1953); // Future
+    insertarSellosDiscograficos(789, "Sony Music Japan", "Japan", 1968); 
+    insertarSellosDiscograficos(456, "FADER Label", "USA", 2002); 
+    insertarSellosDiscograficos(234, "YSL Records", "USA", 2016); 
+    insertarSellosDiscograficos(567, "Independent", "Canada", 2015); 
+    insertarSellosDiscograficos(901, "Dirty Hit", "UK", 2010); 
+    insertarSellosDiscograficos(678, "Dreamville Records", "USA", 2007); 
+    insertarSellosDiscograficos(345, "Epic Records", "USA", 1953); 
     insertarSellosDiscograficos(111, "Republic Records", "USA", 1995);
     insertarSellosDiscograficos(222, "Interscope Records", "USA", 1990);
     insertarSellosDiscograficos(333, "Atlantic Records", "USA", 1947);
@@ -2904,12 +2940,12 @@ int main (){
     eliminarPlaylist("Sleeping");
     eliminarSelloDiscografico("Epic Records");
 
-    imprimirCanciones();
-    imprimirAlbumes();
-    imprimirArtistas();
-    imprimirPlaylists();
-    imprimirGenerosMusicales();
-    imprimirSellosDiscograficos();
+    // imprimirCanciones();
+    // imprimirAlbumes();
+    // imprimirArtistas();
+    // imprimirPlaylists();
+    // imprimirGenerosMusicales();
+    // imprimirSellosDiscograficos();
     interfaz();
 
     return 0;
