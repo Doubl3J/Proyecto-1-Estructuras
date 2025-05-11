@@ -893,7 +893,7 @@ void eliminarCancionGeneroMusical(string nombre, string tituloC){
     else{
         if (gm -> canciones -> cancion -> Titulo == tituloC){
             gm -> canciones = gm -> canciones -> sig;
-            cout << "Canción elimnada de género musical " << endl;
+            cout << "Canción eliminada de género musical " << endl;
         }
         else{
             eliminarCancionGeneroMusicalAux(gm,cancion);
