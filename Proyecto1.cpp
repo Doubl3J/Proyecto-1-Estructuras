@@ -299,7 +299,7 @@ void eliminarCancion(string titulo){
         if (temp -> Titulo == titulo){
             tempAnt -> sig = temp -> sig;
             cout << "Canción eliminada " << endl;
-            delete temp;
+            temp=nullptr;
             return;
         }
         tempAnt = temp;
@@ -393,7 +393,7 @@ void eliminarAlbum(string titulo){
         if (temp -> Titulo == titulo){
             tempAnt -> sig = temp -> sig;
             cout << "Álbum eliminado " << endl;
-            delete temp;
+            temp=nullptr;
             return;
         }
         tempAnt = temp;
@@ -594,7 +594,7 @@ void eliminarArtista(string tituloAlb){
             primeroArt -> ant = nullptr;
         }
 
-        delete temp;
+        temp=nullptr;
     }
     else{
         if (temp -> ant != nullptr){
@@ -603,7 +603,7 @@ void eliminarArtista(string tituloAlb){
         if (temp -> sig != nullptr){
             temp -> sig -> ant = temp -> ant;
         }
-        delete temp;
+        temp=nullptr;
     }
 }
 
@@ -1849,7 +1849,7 @@ void subMenuArtista() {
                 cout << "Ingrese nombre real: ";
                 getline(cin, nombre_real);
                 cout << "Ingrese país de origen: ";
-                pais =validInteger();
+                pais =validString();
                 getline(cin, pais);
                 insertarArtistas(id, nombre_artistico, nombre_real, pais);
                 cout << "Artista creado exitosamente!\n";
