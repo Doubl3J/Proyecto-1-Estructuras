@@ -2940,12 +2940,12 @@ int main (){
     eliminarPlaylist("Sleeping");
     eliminarSelloDiscografico("Epic Records");
 
-    imprimirCanciones();
-    imprimirAlbumes();
-    imprimirArtistas();
-    imprimirPlaylists();
-    imprimirGenerosMusicales();
-    imprimirSellosDiscograficos();
+    // imprimirCanciones();
+    // imprimirAlbumes();
+    // imprimirArtistas();
+    // imprimirPlaylists();
+    // imprimirGenerosMusicales();
+    // imprimirSellosDiscograficos();
     interfaz();
 
     return 0;
