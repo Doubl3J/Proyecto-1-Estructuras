@@ -2588,7 +2588,7 @@ void consultasAux(){
     cout << "\n" << "-------------------------------------------------" << endl;
     cout << "Menu de consultas" << endl;
     cout << "1 = Género con más canciones registradas" << endl;
-    cout << "2 = Artista con más ablumes publicados " << endl;
+    cout << "2 = Artista con más álbumes publicados " << endl;
     cout << "3 = Canción más larga de la base de datos" << endl;
     cout << "4 = Playlist con más canciones" << endl;
     cout << "5 = Cantidad de álbumes por artista" << endl;
